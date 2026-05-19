@@ -78,10 +78,9 @@ export const profile = {
       tagline: "관심 분야의 신규 논문을 한 곳에서 — Gemini로 한국어 요약까지",
       description:
         "arXiv + HuggingFace Daily Papers를 통합 피드로 머지하고, Gemini 2.5 Flash로 abstract를 한국어 요약. 카테고리 토글·통합 검색·노트·읽음 기록까지 자체 디스커버리 워크플로우.",
-      image: null as string | null,
-      placeholderGradient:
-        "linear-gradient(135deg, #1e40af 0%, #6d28d9 50%, #db2777 100%)",
-      placeholderEmoji: "📰",
+      image: "/sideprojects/my-arxiv.png" as string | null,
+      placeholderGradient: null,
+      placeholderEmoji: null,
       live: "https://my-arxiv.vercel.app/" as string | null,
       repo: "https://github.com/hizieun/my-arxiv",
       released: "2026.05 – 진행 중",
