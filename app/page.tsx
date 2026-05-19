@@ -33,11 +33,11 @@ export default async function Home() {
           </div>
           <h1 className="text-4xl sm:text-6xl font-bold tracking-tight leading-[1.1] mb-6">
             {profile.name}
-            <span className="block text-muted font-medium text-2xl sm:text-3xl mt-3">
+            <span className="block text-muted font-medium text-xl sm:text-3xl mt-3 break-keep">
               {profile.tagline}
             </span>
           </h1>
-          <p className="text-lg sm:text-xl text-foreground/80 leading-relaxed max-w-2xl mb-10">
+          <p className="text-base sm:text-xl text-foreground/80 leading-relaxed max-w-2xl mb-10 break-keep">
             {profile.subtagline}
           </p>
 
@@ -65,13 +65,15 @@ export default async function Home() {
           </div>
 
           {/* Stats */}
-          <div className="grid grid-cols-3 gap-6 max-w-xl pt-8 border-t border-border">
+          <div className="grid grid-cols-3 gap-3 sm:gap-6 max-w-xl pt-8 border-t border-border">
             {profile.stats.map((s) => (
               <div key={s.label}>
-                <div className="text-2xl sm:text-3xl font-bold tracking-tight">
+                <div className="text-xl sm:text-3xl font-bold tracking-tight">
                   {s.value}
                 </div>
-                <div className="text-sm text-muted">{s.label}</div>
+                <div className="text-xs sm:text-sm text-muted leading-tight break-keep">
+                  {s.label}
+                </div>
               </div>
             ))}
           </div>
