@@ -12,15 +12,33 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+// Use Vercel's auto-injected URL until a custom domain is wired up,
+// fall back to localhost for local dev.
+const siteUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL
+  ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+  : process.env.VERCEL_URL
+    ? `https://${process.env.VERCEL_URL}`
+    : "http://localhost:3000";
+
+const title = "강지은 · AI Engineer Portfolio";
+const description =
+  "데이터의 가치를 구현하는 AI 엔지니어 강지은의 포트폴리오. LLM·RAG·Agent를 production까지 책임진 6년차의 케이스 스터디.";
+
 export const metadata: Metadata = {
-  title: "강지은 · AI Engineer Portfolio",
-  description:
-    "데이터의 가치를 구현하는 AI 엔지니어 강지은의 포트폴리오. LLM·RAG·Agent를 production까지 책임진 6년차의 케이스 스터디.",
-  metadataBase: new URL("https://zieun.dev"),
+  title,
+  description,
+  metadataBase: new URL(siteUrl),
   openGraph: {
-    title: "강지은 · AI Engineer Portfolio",
-    description: "RAG · LLM Agent · MLOps · 6년차 AI 엔지니어",
+    title,
+    description,
     type: "website",
+    locale: "ko_KR",
+    siteName: "강지은 · Portfolio",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title,
+    description,
   },
 };
 
