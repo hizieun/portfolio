@@ -102,7 +102,7 @@ AI 스타트업에서 커리어를 시작해, 컴퓨터 비전(OCR·의료영상
   - AI Market — Applications 단일 테이블 디자인(STD) + GSI 3개로 모든 access pattern 단일 쿼리 커버
   - 승인 플로우(PENDING → APPROVED/REJECTED) + Cognito groups × Application.Roles 교집합 가시성
   - MCP 표준 도입 (발표 6개월 만에 사내 플랫폼 통합)
-  - "다시 한다면": 권한을 OpenSearch 인덱스 메타데이터 필터로 내려서 retrieval 단계에서 필터링 (현재는 API 후필터)
+  - "다시 한다면": **메타데이터 pre-filter + API post-filter 하이브리드**. 처음엔 인덱스로 내리는 게 답이라고 봤지만, 권한 변경(퇴사·직무 이동) 실시간 반영이 어려운 메타데이터의 약점을 고려해 *비용은 인덱스 계층 / 실시간성은 API 계층*으로 역할 분리
   - 교훈: "권한 모델은 데이터 계층까지 내려야 한다"
 
 ### 3) NeuroCore RAG Agent · 공장 데이터를 묻는 챗봇
