@@ -5,29 +5,17 @@ export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 export const alt = "강지은 · AI Engineer Portfolio";
 
-// Fetch only the glyphs we use, in the weights we need, from Google Fonts.
-// This works around the lack of Korean glyphs in Edge runtime defaults.
-async function loadGoogleFont(family: string, weight: number, text: string) {
-  const url = `https://fonts.googleapis.com/css2?family=${family.replace(/ /g, "+")}:wght@${weight}&text=${encodeURIComponent(text)}`;
-  const css = await fetch(url, {
-    headers: {
-      "User-Agent":
-        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-    },
-  }).then((r) => r.text());
-  const match = css.match(/src: url\((.+?)\) format/);
-  if (!match) throw new Error(`could not parse font CSS for ${family}`);
-  return fetch(match[1]).then((r) => r.arrayBuffer());
+// Load Noto Sans KR variable font from the colocated _fonts/ dir.
+// We tried Google Fonts CSS fetching at request time but the Edge runtime
+// returned 200 + 0 bytes — likely because the CSS endpoint changed format
+// or the binary URL is blocked. Bundling a local TTF is the reliable path.
+async function loadFont() {
+  const url = new URL("./_fonts/NotoSansKR-Bold.ttf", import.meta.url);
+  return fetch(url).then((r) => r.arrayBuffer());
 }
 
 export default async function OG() {
-  // every character that appears in the image — used for font subsetting
-  const glyphs =
-    "강지은데이터의가치를구현하는AI엔지니어Currently shipping at KB증권경력Production프로젝트국제학술지게재LLM·RAG·MLOps6년차5+2편";
-  const [regular, bold] = await Promise.all([
-    loadGoogleFont("Noto Sans KR", 500, glyphs),
-    loadGoogleFont("Noto Sans KR", 700, glyphs),
-  ]);
+  const font = await loadFont();
 
   return new ImageResponse(
     (
@@ -179,8 +167,7 @@ export default async function OG() {
     {
       ...size,
       fonts: [
-        { name: "Noto Sans KR", data: regular, weight: 500, style: "normal" },
-        { name: "Noto Sans KR", data: bold, weight: 700, style: "normal" },
+        { name: "Noto Sans KR", data: font, weight: 700, style: "normal" },
       ],
     },
   );
