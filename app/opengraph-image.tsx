@@ -4,6 +4,12 @@ import { ImageResponse } from "next/og";
 // 1MB size limit on Vercel Hobby. OG images are CDN-cached so cold start
 // difference doesn't matter in practice.
 export const runtime = "nodejs";
+
+// Skip build-time prerender. The font loads via `new URL("./_fonts/...",
+// import.meta.url)` + fetch, which works at request time but not in the
+// build prerender (`fetch failed: not implemented... yet`). CDN cache
+// fills on first hit anyway.
+export const dynamic = "force-dynamic";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 export const alt = "강지은 · AI Engineer Portfolio";
