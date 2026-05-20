@@ -1,6 +1,9 @@
 import { ImageResponse } from "next/og";
 
-export const runtime = "edge";
+// Use nodejs runtime: the 10MB Korean font puts the function over Edge's
+// 1MB size limit on Vercel Hobby. OG images are CDN-cached so cold start
+// difference doesn't matter in practice.
+export const runtime = "nodejs";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 export const alt = "강지은 · AI Engineer Portfolio";
