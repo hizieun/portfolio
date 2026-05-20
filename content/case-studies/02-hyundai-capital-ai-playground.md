@@ -20,7 +20,7 @@ stack:
 
 현대캐피탈 임직원 전체가 쓰는 사내 LLM 챗봇 플랫폼을 AWS Serverless 풀스택으로 0→1 구축. AWS의 오픈소스 솔루션(GenAI LLM Chatbot) 위에 **HC 전용 3가지 핵심 기능**을 얹는 게 미션이었습니다:
 
-- **RAG 문서별 권한 모델** (조직/사용자/DRM 3축)
+- **RAG 문서별 권한 모델** (광역·조직·사용자 OR 결합 + DRM 직교 플래그)
 - **AI Market** (사내 챗봇 마켓플레이스 — 즐겨찾기·리뷰·승인·공유)
 - **MCP Tool 연동** (사내 도구 동적 등록)
 
@@ -52,16 +52,18 @@ HC 전용 3가지 기능은 처음부터 만들어야 했습니다:
 
 ```typescript
 accessRules: {
-  allowAll: boolean,
-  organizations: string[],  // 부서 단위
-  users: string[],          // 개인 단위
-  drm: boolean              // DRM 플래그
+  allowAll: boolean,           // 광역 (binary)
+  organizations: string[],     // 부서 기반 축
+  users: string[],             // 개인 기반 축
+  drm: boolean                 // 부가 처리 플래그 (접근 결정과 직교)
 }
 ```
 
-3축 권한 모델로 *조직 기반 광역 정책*과 *예외 사용자 추가*를 동시에 표현. `allowAll: false`일 때는 organizations 또는 users 중 하나 이상 필수 — 권한 누락 방지.
+**3축 OR 결합**: `allowAll`·`organizations`·`users` 중 *하나라도 만족*하면 접근 허용. `allowAll: false`일 때 두 배열이 *동시에 비어있을 수 없게* invariant 검증 — *아무도 못 보는 문서가 인덱스에 살아있는 상태*를 방지.
 
-검증은 `has_access(user, document)` 함수로 API 호출 시점에 실행. 이 로직 하나에 **26개 커밋**을 쌓으며 엣지 케이스를 메웠습니다.
+**DRM은 직교 플래그**: 접근 결정과 별개로 *다운로드 차단·인용 메타 표시·감사 로깅 강화* 같은 사후 처리를 트리거. *볼 수 있는가*는 3축이, *어떻게 보여줄까*는 DRM이 결정.
+
+검증은 `has_access(user, document)` 함수로 API 호출 시점에 실행 (post-retrieval filter). effective user는 Cognito JWT(`sub`·`groups`) + DynamoDB `Users`(조직 멤버십) + `Organizations`(부서 계층)로 구성. 이 권한 로직과 주변 함수에 **26개 커밋**을 쌓으며 엣지 케이스를 메웠습니다.
 
 ### 2) AI Market — Applications Single-Table Design
 
@@ -112,7 +114,7 @@ Tools 테이블에 transport·URL·description을 저장 → `ToolManager.get_mc
 | 결과 | 상세 |
 |---|---|
 | **전사 출시** | 현대캐피탈 전 임직원 대상 운영 |
-| **RAG 권한 로직** | 3축(조직/사용자/DRM) `accessRules` 모델 설계 및 26 커밋으로 구현 |
+| **RAG 권한 로직** | `accessRules` 모델 설계 (광역·조직·사용자 OR + DRM 직교) — documents.py 26 커밋 |
 | **AI Market** | Applications STD로 메타데이터/즐겨찾기/리뷰/승인까지 단일 테이블에서 처리. GSI 3개로 모든 access pattern 커버 |
 | **MCP 표준 도입** | 발표 6개월 만에 사내 플랫폼 도입, Bedrock 추론 파이프라인에 통합 |
 | **본인 기여** | documents.py 26 / documents route 20 / applications.py 15 / ai_market.py 12 커밋 |
