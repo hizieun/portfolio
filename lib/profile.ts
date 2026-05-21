@@ -38,6 +38,7 @@ export const profile = {
       "LangGraph",
       "MCP",
       "OpenAI Assistants API",
+      "OpenAI Q&A Fine-tuning",
       "PyTorch",
       "Ragas",
       "TensorFlow",

@@ -18,7 +18,7 @@ AI 스타트업에서 커리어를 시작해, 컴퓨터 비전(OCR·의료영상
 
 ### 핵심 강점
 
-- LLM / RAG / Agent: GPT-4o · Bedrock · LangChain · LangGraph · MCP · Ragas
+- LLM / RAG / Agent / Fine-tuning: GPT-4o · Bedrock · LangChain · LangGraph · MCP · Ragas · OpenAI Q&A Fine-tuning
 - Python 백엔드: FastAPI · Flask · 비동기 처리 · 마이크로서비스
 - AWS Serverless: Lambda · AppSync · DynamoDB · OpenSearch · SageMaker · Bedrock
 - Computer Vision: PyTorch · TensorFlow · OCR · Object Detection · SSL
@@ -35,6 +35,7 @@ AI 스타트업에서 커리어를 시작해, 컴퓨터 비전(OCR·의료영상
 - MCP
 - OpenAI Assistants API
 - PyTorch
+- OpenAI Q&A Fine-tuning
 - Ragas
 - TensorFlow
 - Titan Embeddings v2
@@ -109,17 +110,18 @@ AI 스타트업에서 커리어를 시작해, 컴퓨터 비전(OCR·의료영상
 2024.01 – 2025.03 · 뉴로코어 · 정규직 · 선임연구원 (3인 팀 리딩)
 
 - 설명: 제조 현장 생산 시뮬레이션 데이터를 자연어 질문으로 분석하는 RAG Agent. 베테랑 컨설턴트의 multi-factor 판단(setup time change rate · 설비 이용률 · 납기율 · 추세 · 유사 제품 이력)을 LLM Agent 흐름으로 시스템화.
-- 사용 기술: GPT-4o, LangChain, LangGraph, OpenAI Assistants API, Ragas, FastAPI (Flask에서 마이그레이션), MySQL, Python
-- 역할: 3인 팀에서 프롬프트 설계 · 시나리오 작성 · 챗봇 응답 흐름 기획 주도. RAG Agent 아키텍처, Function Calling 구조, Instruction/Knowledge 문서, Ragas 평가 기준까지.
+- 사용 기술: GPT-4o, **OpenAI Q&A Fine-tuning**, LangChain, LangGraph, OpenAI Assistants API, Ragas, FastAPI (Flask에서 마이그레이션), MySQL, Python
+- 역할: 3인 팀에서 프롬프트 설계 · 시나리오 작성 · 챗봇 응답 흐름 기획 주도. RAG Agent 아키텍처, Function Calling 구조, Instruction/Knowledge 문서, **OpenAI Q&A Fine-tuning 학습 데이터 설계·검수 (Ragas 자동 생성 + 컨설턴트 합의)**, 평가 인프라까지.
 - 성과 / 배운점:
-  - 응답 정확도 +30% (도메인 컨설턴트 정성 평가 기준)
-  - LangChain + Ragas 자동 QA 데이터셋 생성 파이프라인 — 평가 효율 +40%
+  - **RAG + Fine-tuning hybrid 채택** — GPU 없는 환경의 도메인 특화 트레이드오프. RAG는 *최신 데이터*, Fine-tuned 모델은 *도메인 화법·판단 패턴*
+  - 응답 정확도 +30% (**10개 평가셋, 컨설턴트 합의 채점 — prototype validation, 통계적 의미는 제한적**)
+  - **Ragas 100개 Q&A 자동 생성 + 컨설턴트 검수**가 Fine-tuning 학습 데이터셋. 평가셋(10개)은 사람이 직접 작성 (data leakage 방지). 수작업 대비 **데이터 처리 효율 +40%**
   - 10+ KPI 자동 응답 시나리오 구현
   - 국내 대기업 3개사(제조·유통·통신) 시연 성공
   - 특허 출원 1건 참여 (LLM 활용 공급망 분석)
   - Flask → FastAPI 마이그레이션으로 동시 외부 호출 처리 개선
-  - "다시 한다면": LLM-as-Judge로 70% 자동화하고 사람은 edge case·judgment 분기점만 보게 — 평가 사이클을 일주일 → 하루로
-  - 교훈: "평가 자체가 제품의 일부다"
+  - "다시 한다면": **평가셋을 50+로 확장 + LLM-as-Judge 병행** — 10개 평가셋은 prototype 검증으론 충분했지만 운영 단계 신뢰도엔 부족. Faithfulness·Answer Relevancy·Context Precision/Recall로 자동 채점 70% + 컨설턴트는 judgment 분기점만. **RAG 품질과 Fine-tuned 모델 generation 품질을 분리 측정**해 어디서 성능이 나오는지 명확히
+  - 교훈: "평가 자체가 제품의 일부다. 그리고 프로토타입 단계의 숫자는 가능성의 증거이지 운영 단계의 결과는 아니다"
 
 ### 4) 진학사 · 대학 입학전형 OCR 자동화 시스템
 2022.05 – 2023.07 · 진학사 · 정규직 · PD (3인 TF 딥러닝 리더)
@@ -204,7 +206,7 @@ DMFR (Dentomaxillofacial Radiology), 2023.05.16
 ### 뉴로코어 · 생성형 A.I. 파트 선임연구원 (정규직)
 2024.01 – 2025.03
 
-GPT-4o 기반 RAG Agent 프로젝트 리딩 — 응답 정확도 +30%, 평가 효율 +40%, 국내 3개사 시연.
+GPT-4o RAG + OpenAI Q&A Fine-tuning hybrid 프로젝트 리딩 — 응답 정확도 +30% (10개 평가셋 prototype validation), 학습 데이터 처리 효율 +40% (Ragas 자동 생성), 국내 3개사 시연.
 
 ### 진학사 · 솔루션사업팀 PD (정규직)
 2022.05 – 2023.07

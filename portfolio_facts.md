@@ -20,7 +20,7 @@
 |---|---|---|---|---|
 | 2025.12 – 현재 | 페르소나에이아이 / 프리랜서 | 데이터팀 · 대리 | KB증권 | 증권사 RAG 데이터 파이프라인 운영·고도화 |
 | 2025.06 – 2025.09 | 아이티센피앤에스 / 프리랜서 | 보안컨설팅팀 · 책임 | 현대캐피탈 (수행: AWS Korea) | 사내 LLM 챗봇 플랫폼 0→1 |
-| 2024.01 – 2025.03 | 뉴로코어 / 정규직 | 생성형 A.I. 파트 · 선임연구원 | 자체 product | GPT-4o RAG Agent 프로젝트 리딩 |
+| 2024.01 – 2025.03 | 뉴로코어 / 정규직 | 생성형 A.I. 파트 · 선임연구원 | 자체 product | GPT-4o RAG + OpenAI Q&A Fine-tuning hybrid 프로젝트 리딩 |
 | 2022.05 – 2023.07 | 진학사 / 정규직 | 솔루션사업팀 · PD | 자체 product | 대학 입학전형 OCR 시스템 |
 | 2020.04 – 2022.05 | 자이플래닛 / 정규직 | AI사업본부 · 주임연구원 | 다도메인 | 의료영상 SSL 연구 + 다도메인 CV 프로젝트 |
 
@@ -56,10 +56,11 @@
 - 역할: Lead AI Engineer · 선임연구원
 - 팀: 3인 (리딩)
 - 도메인: 제조 / 생산계획
-- 핵심 기술: GPT-4o, LangChain, LangGraph, OpenAI Assistants API, Ragas, FastAPI (Flask → 마이그레이션), MySQL, Python
+- 접근: **RAG + OpenAI Q&A Fine-tuning hybrid** (GPU 없는 환경에서의 도메인 특화 트레이드오프 결정)
+- 핵심 기술: GPT-4o, **OpenAI Q&A Fine-tuning**, LangChain, LangGraph, OpenAI Assistants API, Ragas, FastAPI (Flask → 마이그레이션), MySQL, Python
 - 지표:
-  - 응답 정확도 +30% (도메인 컨설턴트 정성 평가 기준)
-  - QA 평가 효율 +40% (Ragas 자동 데이터셋)
+  - 응답 정확도 +30% (**10개 평가셋, 컨설턴트 합의 채점 — prototype validation, 통계적 의미는 제한적**)
+  - **학습** 데이터 처리 효율 +40% (Ragas로 100개 Q&A 자동 생성 + 컨설턴트 검수 vs 전수 수작업)
   - 10+ KPI 자동 응답 시나리오
   - 국내 대기업 3개사(제조·유통·통신) 시연 성공
   - 특허 출원 1건 참여
@@ -147,7 +148,7 @@
 
 ## 기술 스택 (요약)
 
-- AI / ML: Amazon Bedrock, GPT-4o, LangChain, LangGraph, MCP, OpenAI Assistants API, PyTorch, Ragas, TensorFlow, Titan Embeddings v2
+- AI / ML: Amazon Bedrock, GPT-4o, LangChain, LangGraph, MCP, OpenAI Assistants API, **OpenAI Q&A Fine-tuning**, PyTorch, Ragas, TensorFlow, Titan Embeddings v2
 - Vision / NLP: DenseNet · WideResNet · LaplaceNet, Function Calling, KoBERTSum, OCR (marker, Surya, GCP Vision), RAG / Vector Search, YOLO · EfficientDet
 - Backend & Data: Aurora · Kendra, AWS Glue, DynamoDB, OpenSearch, PostgreSQL · MySQL · MSSQL · Teradata, Python (FastAPI · Flask), TypeScript / Node.js
 - Cloud & MLOps: AWS AppSync (GraphQL), AWS Cognito · Step Functions, AWS Lambda, AWS SageMaker, CloudWatch, Docker, MLflow, Ray

@@ -13,11 +13,12 @@
 | "기술적으로 가장 어려웠던 문제" | NeuroCore (암묵지 구조화) | 현대캐피탈 (RAG 권한 모델) |
 | "팀 협업 / 리딩 경험" | NeuroCore (3인 팀 리딩) | 진학사 (3인 TF 딥러닝 리더) |
 | "수동 작업을 자동화한 경험" | KB증권 (법령 PDF → API) | NeuroCore (컨설턴트 노동 자동화) |
-| "다시 한다면 무엇을 바꾸겠나" | 현대캐피탈 (메타데이터+API 하이브리드 권한) | NeuroCore (LLM-as-Judge 도입) |
+| "다시 한다면 무엇을 바꾸겠나" | 현대캐피탈 (메타데이터+API 하이브리드 권한) | NeuroCore (평가셋 확장 + LLM-as-Judge) |
+| "트레이드오프 의사결정 / 제약하에서의 선택" | NeuroCore (GPU 없는 환경에서 OpenAI Fine-tuning 채택) | 현대캐피탈 (3개월 프리랜서 스코프) |
 | "운영 / 안정성 / 거버넌스 경험" | KB증권 (state DB · 로그 표준화) | 현대캐피탈 (RAG 권한·승인 플로우) |
 | "0→1 / 신규 시스템 구축" | 현대캐피탈 (3개월 0→1) | 노포지도 (사이드, 풀스택 0→1) |
 | "최신 기술 빠른 도입 경험" | 현대캐피탈 (MCP 6개월 만에) | my-arxiv (Gemini 2.5 Flash) |
-| "평가 / 검증 / 품질 관리" | NeuroCore (Ragas + 컨설턴트 평가) | 자이플래닛 (SL vs SSL 비교 실험) |
+| "평가 / 검증 / 품질 관리" | NeuroCore (Ragas 학습 데이터 + 사람 평가셋 + train/test split) | 자이플래닛 (SL vs SSL 비교 실험) |
 | "도메인 전문가와의 협업" | NeuroCore (제조 컨설턴트) | KB증권 (법무·금융 컴플) |
 | "사이드 프로젝트 / 자기학습" | 노포지도 (end-to-end 풀스택) | my-arxiv (최신 스택 + LLM 활용) |
 
@@ -118,25 +119,35 @@ KB증권 사내 AI 플랫폼 *깨비AI*는 4종 Agent(법무검토·고객상담
 
 추가로:
 - **Flask → FastAPI 마이그레이션** — Function Calling 동시 호출 늘면서 동기 Flask로는 한계, async로 전환
-- **평가 자동화** — LangChain + Ragas로 Knowledge 기반 평가 질문 수십 개 자동 생성 → 기획 참여 컨설턴트가 정성 평가. 사람의 시간을 *데이터 생성*이 아닌 *기준 정의*에만 쓰는 구조
+- **OpenAI Q&A Fine-tuning 병행** — RAG 4-layer로도 *도메인 화법·판단 패턴*은 base GPT-4o가 못 따라감. GPU 없는 환경 제약 + 3개월짜리 빠른 검증 필요 → 자체 모델 학습 대신 OpenAI Fine-tuning API를 *현실적 최적해*로 채택. RAG는 *최신 데이터*, Fine-tuned 모델은 *도메인 화법*으로 역할 분리
+- **학습/평가 데이터 분리 설계**
+  - 학습셋: Knowledge corpus 기반으로 **Ragas가 100개 Q&A 자동 생성** → 컨설턴트와 함께 전수 품질 검수
+  - 평가셋: **사람이 직접 작성한 10개 질문** (학습셋과 중복 없음, data leakage 방지)
+  - 채점: 컨설턴트와 *합의 채점* (base GPT-4o vs Fine-tuned 모델 비교)
 - 도메인 컨설턴트와 주 1회 review session 운영 — 매주 prompt/knowledge 업데이트 (AI 엔지니어를 넘어 PM 역할까지)
 
 ### Result
-- **응답 정확도 +30%** (컨설턴트 정성 평가 기준)
-- **QA 데이터셋 생성 & 평가 효율 +40%** (Ragas 자동 파이프라인)
+- **응답 정확도 +30%** (10개 평가셋, 컨설턴트와 합의 채점 — *prototype validation, 통계적 의미는 제한적*)
+- **학습 데이터 처리 효율 +40%** (Ragas로 100개 Q&A 자동 생성 + 컨설턴트 검수 vs 전수 수작업)
 - 납기율·병목공정 등 **10+ KPI** 자동 응답 시나리오
 - 국내 대기업 3개사(C·L·S, 제조·유통·통신) 시연 성공
 - **특허 출원 1건 참여** (LLM 활용 공급망 분석, 본인 퇴사로 이름 빠짐)
-- **다시 한다면**: 모든 평가를 컨설턴트 정성 평가에 의존했음. *LLM-as-Judge로 70% 자동화* + 사람은 edge case·judgment 분기점만 보게 했을 것. 평가 사이클 일주일 → 하루로 단축 가능
-- 교훈: "**평가 자체가 제품의 일부다**"
+- **다시 한다면 (두 단계 진화)**:
+  1. **평가셋 50+ 확장 + LLM-as-Judge 병행** — 10개 평가셋은 prototype 가능성 검증엔 충분했지만 운영 단계 신뢰도엔 부족 (한두 문제만 갈려도 ±10%p 출렁). Faithfulness · Answer Relevancy · Context Precision/Recall로 70% 자동 채점, 사람은 judgment 분기점·edge case만 → 평가 사이클 일주일 → 하루
+  2. **RAG와 Fine-tuning 기여도 분리 측정** — *RAG retrieval 자체 품질* (Context Precision/Recall) vs *Fine-tuned 모델 generation 품질* (Faithfulness · Answer Relevancy) 분리. 어디서 성능이 나오는지 명확히
+- 교훈: "**평가 자체가 제품의 일부다**" + "*프로토타입 단계의 숫자는 가능성의 증거이지 운영 단계의 결과는 아니다*"
 
 ### 이 프로젝트로 답할 수 있는 질문
 - "가장 임팩트 컸던 프로젝트" → 핵심 카드
 - "기술적으로 가장 어려웠던 문제" → "답변 설계가 어려웠다 — 암묵지를 명시지로"
-- "도메인 전문가와의 협업" → 컨설턴트와 주 1회 review session
+- "RAG vs Fine-tuning 선택" / "왜 Fine-tuning까지?" → GPU 없는 환경 + 도메인 화법 요구 → OpenAI Q&A Fine-tuning이 현실적 최적해
+- "트레이드오프 의사결정" → Self-hosted ❌(GPU 없음) / RAG만 ❌(도메인 화법 부족) / RAG + OpenAI Fine-tuning ✅
+- "Ragas 어떻게 썼나?" → *평가가 아닌 학습 데이터 생성*. 100개 자동 생성 + 컨설턴트 검수. 평가셋은 사람이 직접 작성 (train/test split)
+- "+30% 신뢰도?" → 정직하게 *10개 평가셋 prototype validation 한계* 인정 + 다음 단계 보강 계획 (50+ 평가셋 + LLM-as-Judge) 같이 제시
+- "도메인 전문가와의 협업" → 컨설턴트와 주 1회 review session + 학습 데이터 검수
 - "RAG vs Function Calling vs 기존 BI" → 왜 4개 레이어를 합쳤는가
 - "팀 리딩" → 3인 팀 + PM 역할까지
-- "다시 한다면" → LLM-as-Judge 도입
+- "다시 한다면" → 평가셋 확장 + LLM-as-Judge + RAG/Fine-tuning 기여도 분리 측정
 
 ---
 
