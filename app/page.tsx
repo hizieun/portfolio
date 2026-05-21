@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, Mail, MapPin, FileText, ExternalLink, GraduationCap, Award, BookOpen } from "lucide-react";
+import { ArrowRight, Mail, MapPin, ExternalLink, GraduationCap, Award, BookOpen } from "lucide-react";
 
 function GithubIcon({ className }: { className?: string }) {
   return (
@@ -48,14 +48,6 @@ export default async function Home() {
             >
               프로젝트 보기 <ArrowRight className="w-4 h-4" />
             </Link>
-            <a
-              href={profile.resumeNotion}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 border border-border px-5 py-2.5 rounded-lg font-medium hover:bg-muted-bg transition-colors"
-            >
-              <FileText className="w-4 h-4" /> 이력서
-            </a>
             <a
               href={`mailto:${profile.email}`}
               className="inline-flex items-center gap-2 text-muted hover:text-foreground transition-colors"
