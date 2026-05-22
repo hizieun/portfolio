@@ -119,26 +119,41 @@ export default async function Home() {
             </div>
             <div className="lg:col-span-2">
               <ol className="relative border-l border-border space-y-8 pl-6">
-                {profile.experience.map((e) => (
-                  <li key={e.company} className="relative">
-                    <span className="absolute -left-[27px] top-1.5 w-2.5 h-2.5 rounded-full bg-foreground border-2 border-background" />
-                    <div className="text-xs font-mono text-muted mb-1">
-                      {e.period}
-                    </div>
-                    <div className="text-base font-semibold">
-                      {e.company}
-                      {e.client && (
-                        <span className="text-muted font-normal ml-2">
-                          · {e.client}
-                        </span>
+                {profile.experience.map((e) => {
+                  const isCurrent = e.period.includes("현재");
+                  return (
+                    <li key={e.company} className="relative">
+                      {isCurrent ? (
+                        <span
+                          aria-label="현재 근무 중"
+                          className="absolute -left-[29px] top-1 w-3 h-3 rounded-full bg-emerald-500 ring-4 ring-emerald-500/20 animate-pulse"
+                        />
+                      ) : (
+                        <span className="absolute -left-[27px] top-1.5 w-2.5 h-2.5 rounded-full bg-foreground border-2 border-background" />
                       )}
-                    </div>
-                    <div className="text-sm text-muted">{e.role}</div>
-                    <div className="text-sm mt-1 text-foreground/85">
-                      {e.highlight}
-                    </div>
-                  </li>
-                ))}
+                      <div className="text-xs font-mono text-muted mb-1 flex items-center gap-2 flex-wrap">
+                        <span>{e.period}</span>
+                        {isCurrent && (
+                          <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-[10px] font-semibold tracking-wide">
+                            현재 근무 중
+                          </span>
+                        )}
+                      </div>
+                      <div className="text-base font-semibold">
+                        {e.company}
+                        {e.client && (
+                          <span className="text-muted font-normal ml-2">
+                            · {e.client}
+                          </span>
+                        )}
+                      </div>
+                      <div className="text-sm text-muted">{e.role}</div>
+                      <div className="text-sm mt-1 text-foreground/85">
+                        {e.highlight}
+                      </div>
+                    </li>
+                  );
+                })}
               </ol>
             </div>
           </div>
