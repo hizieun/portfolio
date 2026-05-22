@@ -2,7 +2,7 @@
 
 > 데이터의 가치를 구현하는 AI 엔지니어 — 6년차의 production AI 시스템 케이스 스터디.
 
-🌐 **Live**: [my-portfolio-eight-blush-57.vercel.app](https://my-portfolio-eight-blush-57.vercel.app)
+🌐 **Live**: [jieunk-portfolio.vercel.app](https://jieunk-portfolio.vercel.app)
 
 ---
 
@@ -13,7 +13,7 @@
 | **Hero** | 한 줄 소개 + 상태(currently shipping) + 6년차 / 5+ 프로젝트 / 논문 2편 |
 | **About** | 4대 핵심역량 — LLM/RAG · Python 백엔드 · AWS Serverless · Computer Vision |
 | **Experience** | 5개 회사 타임라인 (페르소나에이아이·아이티센·뉴로코어·진학사·자이플래닛) |
-| **Projects** | 5개 case study — NeuroCore RAG Agent, 현대캐피탈 AI Playground, KB증권 RAG, 진학사 OCR, 자이플래닛 치과 영상 AI |
+| **Projects** | 5개 case study — NeuroCore RAG + Fine-tuning Agent, 현대캐피탈 AI Playground, KB증권 RAG, 진학사 OCR, 자이플래닛 치과 영상 AI |
 | **Side Projects** | my-arxiv (논문 피드 + 한국어 요약), 노포지도 (서울 노포 705곳) |
 | **Publications** | 국제 학술지 2편 (BMC Oral Health 2023, DMFR 2023) |
 | **Skills** | AI/ML · Vision/NLP · Backend/Data · Cloud/MLOps 알파벳순 정렬 |
@@ -40,8 +40,9 @@ Repository      GitHub (this repo)
 ├── app/
 │   ├── layout.tsx            # metadata + 폰트
 │   ├── page.tsx              # 단일 페이지 (Hero ~ Contact)
-│   ├── opengraph-image.tsx   # 동적 OG 이미지 (Edge runtime, Noto Sans KR 동적 로딩)
+│   ├── opengraph-image.tsx   # 동적 OG 이미지 (Node.js runtime, 번들된 Noto Sans KR)
 │   ├── twitter-image.tsx
+│   ├── _fonts/               # OG 이미지용 Noto Sans KR Bold TTF
 │   └── projects/[slug]/      # 케이스 스터디 상세 페이지
 ├── components/
 │   ├── site-header.tsx       # sticky 헤더 + 앵커 네비
