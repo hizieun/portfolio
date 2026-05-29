@@ -2,7 +2,7 @@
 
 > 데이터의 가치를 구현하는 AI 엔지니어 — 6년차의 production AI 시스템 케이스 스터디.
 
-🌐 **Live**: [jieunk-portfolio.vercel.app](https://jieunk-portfolio.vercel.app)
+🌐 **Live**: [zieun.dev](https://zieun.dev)
 
 ---
 
