@@ -1,9 +1,17 @@
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
-import type { CaseStudy } from "@/lib/case-studies";
+import type { CaseStudyFrontmatter } from "@/lib/case-studies";
+import type { Lang } from "@/lib/i18n";
+import { localizeFrontmatter } from "@/lib/localize";
 
-export function ProjectCard({ study }: { study: CaseStudy }) {
-  const fm = study.frontmatter;
+export function ProjectCard({
+  frontmatter,
+  lang = "ko",
+}: {
+  frontmatter: CaseStudyFrontmatter;
+  lang?: Lang;
+}) {
+  const fm = localizeFrontmatter(frontmatter, lang);
   const allTech = Object.values(fm.stack).flat().slice(0, 6);
 
   return (

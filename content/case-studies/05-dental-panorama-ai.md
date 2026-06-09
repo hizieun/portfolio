@@ -1,21 +1,27 @@
 ---
 slug: dental-panorama-ai
 title: 치과 파노라마 AI — 연령 예측 & 매복치 분석
+title_en: "Dental Panorama AI — Age & Impacted-Tooth Analysis"
 subtitle: 반지도학습(SSL)으로 라벨 비용을 줄이면서도 임상 수준 정확도 달성
+subtitle_en: "Clinical-grade accuracy while cutting labeling cost with semi-supervised learning"
 company: 자이플래닛 (정규직, 주임연구원)
+company_en: "Zaiplanet (full-time, Research Engineer)"
 role: Data & Experiment Lead (4인 연구팀)
+role_en: "Data & Experiment Lead (4-person research team)"
 period: 2021.10 – 2022.04
+period_en: "Oct 2021 – Apr 2022"
 duration: 7 months
 domain: Medical AI / Computer Vision
 status: Published — 국제 학술지 2건 게재
 tldr: 치과 파노라마 X-ray 기반 환자 연령 예측 + 매복치 발치 난이도 판정 AI 모델 개발. LaplaceNet 기반 SSL로 지도학습 수준의 80%+ 정확도 확보. BMC Oral Health, DMFR에 공동저자로 등재.
+tldr_en: "Built AI models for age estimation and impacted-tooth extraction-difficulty from dental panoramic X-rays. LaplaceNet-based SSL held 80%+ accuracy on par with supervised learning. Co-author on papers in BMC Oral Health and DMFR."
 stack:
   ml: [PyTorch, Ray]
   models: [DenseNet, WideResNet, LaplaceNet]
   tools: [Python, Jupyter, Pandas, Matplotlib, Seaborn]
 metrics:
-  - { label: "SSL 정확도", value: "80%+", detail: "지도학습 수준 달성, 라벨 의존성 ↓" }
-  - { label: "국제 학술지 게재", value: "2건", detail: "BMC Oral Health 2023, DMFR 2023" }
+  - { label: "SSL 정확도", value: "80%+", detail: "지도학습 수준 달성, 라벨 의존성 ↓", label_en: "SSL accuracy", detail_en: "on par with SL, fewer labels" }
+  - { label: "국제 학술지 게재", value: "2건", detail: "BMC Oral Health 2023, DMFR 2023", label_en: "Papers published", detail_en: "BMC Oral Health 2023, DMFR 2023" }
 papers:
   - title: "Application of entire dental panorama image data in artificial intelligence model for age estimation"
     venue: BMC Oral Health

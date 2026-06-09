@@ -6,6 +6,8 @@ export type Metric = {
   label: string;
   value: string;
   detail?: string;
+  label_en?: string;
+  detail_en?: string;
 };
 
 export type Paper = {
@@ -31,6 +33,14 @@ export type CaseStudyFrontmatter = {
   stack: CaseStudyStack;
   metrics?: Metric[];
   papers?: Paper[];
+  // English overrides (big-tech résumé tone). Fall back to the Korean
+  // field when absent. See lib/localize.ts.
+  title_en?: string;
+  subtitle_en?: string;
+  company_en?: string;
+  role_en?: string;
+  period_en?: string;
+  tldr_en?: string;
 };
 
 export type CaseStudy = {

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import { profile } from "@/lib/profile";
+import { useLang, type Lang } from "@/lib/i18n";
 
 const NAV_ITEMS = [
   { href: "/#about", label: "About" },
@@ -15,6 +16,34 @@ const NAV_ITEMS = [
   { href: "/#background", label: "Background" },
   { href: "/#contact", label: "Contact" },
 ];
+
+function LangToggle() {
+  const { lang, setLang } = useLang();
+  const opt = (value: Lang, label: string) => (
+    <button
+      type="button"
+      onClick={() => setLang(value)}
+      aria-pressed={lang === value}
+      className={`px-2 py-0.5 rounded-full text-xs font-mono font-semibold transition-colors ${
+        lang === value
+          ? "bg-accent text-accent-foreground"
+          : "text-muted hover:text-foreground"
+      }`}
+    >
+      {label}
+    </button>
+  );
+  return (
+    <div
+      className="flex items-center gap-0.5 rounded-full border border-border p-0.5"
+      role="group"
+      aria-label="Language"
+    >
+      {opt("ko", "KO")}
+      {opt("en", "EN")}
+    </div>
+  );
+}
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
@@ -44,30 +73,36 @@ export function SiteHeader() {
           {profile.name}.ai
         </Link>
 
-        {/* desktop nav */}
-        <nav className="hidden md:flex items-center gap-4 text-sm text-muted">
-          {NAV_ITEMS.map((item) => (
-            <a
-              key={item.href}
-              href={item.href}
-              className="hover:text-foreground transition-colors"
-            >
-              {item.label}
-            </a>
-          ))}
-        </nav>
+        <div className="flex items-center gap-3">
+          {/* desktop nav */}
+          <nav className="hidden md:flex items-center gap-4 text-sm text-muted">
+            {NAV_ITEMS.map((item) => (
+              <a
+                key={item.href}
+                href={item.href}
+                className="hover:text-foreground transition-colors"
+              >
+                {item.label}
+              </a>
+            ))}
+          </nav>
 
-        {/* mobile menu button */}
-        <button
-          type="button"
-          aria-label={open ? "메뉴 닫기" : "메뉴 열기"}
-          aria-expanded={open}
-          aria-controls="mobile-nav"
-          onClick={() => setOpen((v) => !v)}
-          className="md:hidden inline-flex items-center justify-center w-9 h-9 -mr-2 rounded-md hover:bg-muted-bg transition-colors"
-        >
-          {open ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-        </button>
+          {/* language toggle — always visible (also on mobile, outside the
+              hamburger, because it's a mode switch not a nav item) */}
+          <LangToggle />
+
+          {/* mobile menu button */}
+          <button
+            type="button"
+            aria-label={open ? "메뉴 닫기 / Close menu" : "메뉴 열기 / Open menu"}
+            aria-expanded={open}
+            aria-controls="mobile-nav"
+            onClick={() => setOpen((v) => !v)}
+            className="md:hidden inline-flex items-center justify-center w-9 h-9 -mr-2 rounded-md hover:bg-muted-bg transition-colors"
+          >
+            {open ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          </button>
+        </div>
       </div>
 
       {/* mobile menu panel */}

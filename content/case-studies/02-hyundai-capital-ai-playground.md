@@ -1,14 +1,20 @@
 ---
 slug: hyundai-capital-ai-playground
 title: 사내 LLM 플랫폼 0→1 구축
+title_en: "Building an Internal LLM Platform 0→1"
 subtitle: 권한 거버넌스부터 챗봇 마켓플레이스까지, AWS Serverless 풀스택
+subtitle_en: "From access governance to a chatbot marketplace — full-stack on AWS Serverless"
 company: 현대캐피탈 AI Playground (AWS Korea 수행 · 아이티센피앤에스 소속)
+company_en: "Hyundai Capital AI Playground (delivered via AWS Korea · ITCEN P&S)"
 role: AI/Backend Engineer (프리랜서, 책임)
+role_en: "AI / Backend Engineer (Contract, Lead)"
 period: 2025.06 – 2025.09
+period_en: "Jun 2025 – Sep 2025"
 duration: 3 months
 domain: Enterprise AI Platform / Financial Services
 status: Shipped — 현대캐피탈 전사 대상 운영
 tldr: AWS GenAI LLM Chatbot 솔루션 위에 RAG 문서별 권한 모델, AI Market(사내 챗봇 마켓플레이스), MCP Tool 연동을 3개월 안에 풀스택으로 구축.
+tldr_en: "On top of the AWS GenAI LLM Chatbot solution, built RAG document-level permissions, an in-house chatbot marketplace (AI Market), and MCP tool integration — full-stack, in 3 months."
 stack:
   llm: [Amazon Bedrock, LangChain, MCP]
   backend: [AWS Lambda, AppSync (GraphQL/WebSocket), DynamoDB, OpenSearch, Cognito, Step Functions, SageMaker, CloudWatch]

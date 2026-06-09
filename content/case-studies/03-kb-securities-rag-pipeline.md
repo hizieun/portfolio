@@ -1,14 +1,20 @@
 ---
 slug: kb-securities-rag-pipeline
 title: 증권사 RAG 데이터 파이프라인 운영 & 고도화
+title_en: "Operating & Scaling a Securities RAG Pipeline"
 subtitle: 사내 KMS · 금융상품 · 법령/판례 세 갈래 파이프라인 운영과 자동화
+subtitle_en: "Running and automating three pipelines — internal KMS, financial products, and law/precedent"
 company: KB증권 (페르소나에이아이 소속, 프리랜서)
+company_en: "KB Securities (via PersonaAI · contract)"
 role: AI/Backend Engineer (대리, 데이터팀)
+role_en: "AI / Backend Engineer (Data Team, Contract)"
 period: 2025.12 – 현재 (Currently Shipping)
+period_en: "Dec 2025 – Present"
 duration: ongoing
 domain: Financial Services / Securities
 status: 🚧 Currently Shipping
 tldr: KB증권 사내 운영지원 KMS, 고객 대상 펀드/ELS 상품 설명, 법무검토 에이전트용 법령·판례 세 갈래의 RAG 데이터 파이프라인 운영·고도화. 수동 PDF 다운로드 → Open API + 개정감지 자동화, OpenSearch Bulk Insert 도입, PostgreSQL 기반 파이프라인 state 관리.
+tldr_en: "Operating and scaling three RAG data pipelines at KB Securities — internal-ops KMS, fund/ELS product info, and law/precedent for the legal-review agent. Automated manual PDF downloads into an Open-API + revision-detection flow, adopted OpenSearch bulk insert, and designed PostgreSQL-based pipeline state management."
 stack:
   llm: [Amazon Bedrock, Titan Embeddings v2, LangChain]
   ingestion: [marker, Surya OCR, LangChain Splitter, Token chunking]

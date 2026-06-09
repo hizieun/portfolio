@@ -1,22 +1,28 @@
 ---
 slug: jinhak-ocr-admissions
 title: 대학 입학전형 OCR 자동화 시스템
+title_en: "Admissions-Document OCR Automation"
 subtitle: 다양한 양식의 모집요강·학생부를 자동으로 인식·정리
+subtitle_en: "Auto-recognizing and structuring varied admissions guidelines & student records"
 company: 진학사 (정규직, PD)
+company_en: "Jinhak (full-time, PD)"
 role: Deep Learning Engineer (3인 TF · 딥러닝 리더)
+role_en: "Deep Learning Engineer (3-person TF · DL lead)"
 period: 2022.05 – 2023.07
+period_en: "May 2022 – Jul 2023"
 duration: 1 year 3 months
 domain: EdTech / Document Intelligence
 status: Shipped — 프로토타입 완성, 특허 출원
 tldr: 대학 입학전형 자료(모집요강·학생부)를 자동 인식·정리하는 OCR 딥러닝 시스템. 다양한 양식 대응 전처리 로직과 한글 특화 모델 비교로 수작업 대비 입력 시간 40% 단축. 특허 출원 1건 참여.
+tldr_en: "An OCR deep-learning system that auto-recognizes and structures university admissions documents. Korean-specialized model comparison and format-tolerant preprocessing cut manual entry time 40%. Contributed to one patent filing."
 stack:
   ml: [TensorFlow, Google Cloud Vision API]
   backend: [Python, Flask]
   frontend: [JavaScript]
   tools: [GitHub, Figma, Notion, Dooray]
 metrics:
-  - { label: "입력 시간 단축", value: "40%", detail: "수작업 대비" }
-  - { label: "특허 출원", value: "1건", detail: "딥러닝 기반 OCR 시스템" }
+  - { label: "입력 시간 단축", value: "40%", detail: "수작업 대비", label_en: "Manual entry time", detail_en: "vs. manual" }
+  - { label: "특허 출원", value: "1건", detail: "딥러닝 기반 OCR 시스템", label_en: "Patent filed", detail_en: "DL-based OCR system" }
 ---
 
 ## TL;DR

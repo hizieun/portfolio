@@ -1,19 +1,25 @@
 ---
 slug: rag-agent-manufacturing
 title: 공장 데이터를 묻는 RAG Agent
+title_en: "RAG Agent for Factory Data"
 subtitle: 컨설턴트의 multi-factor 판단을 RAG + OpenAI Q&A Fine-tuning hybrid로 자동화
+subtitle_en: "Automating consultants' multi-factor judgment with a RAG + OpenAI Q&A fine-tuning hybrid"
 company: NeuroCore
+company_en: "NeuroCore"
 role: Lead AI Engineer (3인 팀)
+role_en: "Lead AI Engineer (team of 3)"
 period: 2024.03 – 2025.03
+period_en: "Mar 2024 – Mar 2025"
 duration: 13 months
 domain: Manufacturing / Production Planning
 status: Shipped — 국내 대기업 3개사 시연 완료
 tldr: GPT-4o + LangGraph 기반 RAG Agent에 OpenAI Q&A Fine-tuning을 병행해 도메인 특화. 베테랑 컨설턴트의 판단 노동을 자동화. Prototype validation 응답 정확도 +30% (10개 평가셋, 컨설턴트 합의 채점), Ragas 학습 데이터 생성으로 처리 효율 +40%.
+tldr_en: "A GPT-4o + LangGraph RAG agent, domain-specialized with OpenAI Q&A fine-tuning, that automates veteran consultants' judgment work. Prototype validation — +30% answer accuracy (10-question eval set, consensus-scored with consultants) and +40% data-prep throughput via Ragas-generated training data."
 metrics:
-  - { label: "응답 정확도 향상", value: "+30%", detail: "10개 평가셋 · 컨설턴트 합의 채점 (prototype validation)" }
-  - { label: "QA 학습데이터 처리 효율", value: "+40%", detail: "Ragas 자동 생성 + 컨설턴트 검수 vs 전수 수작업" }
-  - { label: "자동 응답 KPI", value: "10+" }
-  - { label: "고객사 시연", value: "3개사" }
+  - { label: "응답 정확도 향상", value: "+30%", detail: "10개 평가셋 · 컨설턴트 합의 채점 (prototype validation)", label_en: "Answer accuracy", detail_en: "10-Q eval · consultant consensus (prototype)" }
+  - { label: "QA 학습데이터 처리 효율", value: "+40%", detail: "Ragas 자동 생성 + 컨설턴트 검수 vs 전수 수작업", label_en: "QA data throughput", detail_en: "Ragas auto-gen + review vs. all-manual" }
+  - { label: "자동 응답 KPI", value: "10+", label_en: "Auto-answered KPIs" }
+  - { label: "고객사 시연", value: "3개사", label_en: "Enterprise demos" }
 stack:
   llm: [GPT-4o, OpenAI Q&A Fine-tuning, LangChain, LangGraph, OpenAI Assistants API, Ragas]
   backend: [FastAPI, Flask → FastAPI 마이그레이션, MySQL]
