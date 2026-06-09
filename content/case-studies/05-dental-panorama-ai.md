@@ -5,7 +5,7 @@ title_en: "Dental Panorama AI — Age & Impacted-Tooth Analysis"
 subtitle: 반지도학습(SSL)으로 라벨 비용을 줄이면서도 임상 수준 정확도 달성
 subtitle_en: "Clinical-grade accuracy while cutting labeling cost with semi-supervised learning"
 company: 자이플래닛 (정규직, 주임연구원)
-company_en: "Zaiplanet (full-time, Research Engineer)"
+company_en: "Xaiplanet (full-time, Research Engineer)"
 role: Data & Experiment Lead (4인 연구팀)
 role_en: "Data & Experiment Lead (4-person research team)"
 period: 2021.10 – 2022.04

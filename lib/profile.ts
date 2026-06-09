@@ -412,7 +412,7 @@ const profileEn: typeof profileKo = {
       current: false,
     },
     {
-      company: "Zaiplanet",
+      company: "Xaiplanet",
       role: "AI Engineer",
       period: "Apr 2020 – May 2022",
       client: null,
