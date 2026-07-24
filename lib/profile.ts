@@ -101,7 +101,7 @@ const sideProjectsBase = {
       "Python",
       "Selenium",
       "SQLite",
-      "Gemini 2.5 Flash",
+      "Gemini 3.6 Flash",
       "Workbox PWA",
       "GitHub Actions",
     ],
@@ -167,11 +167,11 @@ const profileKo = {
     {
       ...sideProjectsBase.noodle,
       name: "노포지도 🍜",
-      tagline: "서울 노포·야장 705곳을 한 지도에서 — AI 맛집 추천까지",
+      tagline: "서울 노포·야장 800여 곳을 한 지도에서 — AI 맛집 추천까지",
       description:
-        "본인 취미(맛집 지도 정리)를 product로 만든 사이드 프로젝트. Selenium 크롤러 → SQLite → React + Leaflet 풀스택을 end-to-end로 직접 구축하고 PWA + GitHub Actions 주간 자동 크롤링까지 운영. Gemini 2.5 Flash 기반 챗봇이 노포지도 데이터를 근거로 조건별 맛집을 추천 (\"비 오는 날 종로구 노포 술집 추천해줘\" 등).",
+        "본인 취미(맛집 지도 정리)를 product로 만든 사이드 프로젝트. Selenium 크롤러 → SQLite → React + Leaflet 풀스택을 end-to-end로 직접 구축하고 PWA + GitHub Actions 주간 자동 크롤링까지 운영. Gemini 3.6 Flash 챗봇이 노포지도 데이터에 grounding해 실재하는 식당만 조건별로 추천 (\"비 오는 날 종로구 노포 술집 추천해줘\" 등).",
       highlights: [
-        "705 restaurants",
+        "800+ restaurants",
         "AI 맛집 추천 챗봇",
         "PWA · Offline cache",
         "Weekly GHA cron",
@@ -312,11 +312,11 @@ const profileEn: typeof profileKo = {
     {
       ...sideProjectsBase.noodle,
       name: "Nopo Map 🍜",
-      tagline: "705 of Seoul's old-school & street-food spots on one map — with AI recommendations",
+      tagline: "800+ of Seoul's old-school & street-food spots on one map — with AI recommendations",
       description:
-        "Turned a personal hobby (mapping restaurants) into a product. Built the full stack end-to-end — Selenium crawler → SQLite → React + Leaflet — plus a PWA offline cache and a weekly GitHub Actions crawl. A Gemini 2.5 Flash chatbot recommends spots from the Nopo Map dataset by free-form criteria (e.g. \"a cozy place near Jongno for a rainy day\").",
+        "Turned a personal hobby (mapping restaurants) into a product. Built the full stack end-to-end — Selenium crawler → SQLite → React + Leaflet — plus a PWA offline cache and a weekly GitHub Actions crawl. A Gemini 3.6 Flash chatbot, grounded on the Nopo Map dataset, recommends only real spots by free-form criteria (e.g. \"a cozy place near Jongno for a rainy day\").",
       highlights: [
-        "705 restaurants",
+        "800+ restaurants",
         "AI recommendation chatbot",
         "PWA · offline cache",
         "Weekly GHA cron",
