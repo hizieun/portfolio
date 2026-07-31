@@ -46,6 +46,8 @@ export type CaseStudyFrontmatter = {
 export type CaseStudy = {
   frontmatter: CaseStudyFrontmatter;
   content: string;
+  /** Body from the sibling `*.en.md`, when one exists. */
+  contentEn: string | null;
   order: number;
 };
 
@@ -61,7 +63,10 @@ function periodStartTime(period: string): number {
 
 export async function getAllCaseStudies(): Promise<CaseStudy[]> {
   const files = await fs.readdir(CONTENT_DIR);
-  const mdFiles = files.filter((f) => f.endsWith(".md")).sort();
+  // `foo.en.md` holds the English body of `foo.md` — paired, not listed.
+  const mdFiles = files
+    .filter((f) => f.endsWith(".md") && !f.endsWith(".en.md"))
+    .sort();
 
   const studies = await Promise.all(
     mdFiles.map(async (file) => {
@@ -69,9 +74,13 @@ export async function getAllCaseStudies(): Promise<CaseStudy[]> {
       const raw = await fs.readFile(filePath, "utf8");
       const { data, content } = matter(raw);
       const order = Number.parseInt(file.split("-")[0], 10);
+      const contentEn = await fs
+        .readFile(filePath.replace(/\.md$/, ".en.md"), "utf8")
+        .catch(() => null);
       return {
         frontmatter: data as CaseStudyFrontmatter,
         content,
+        contentEn,
         order,
       };
     }),

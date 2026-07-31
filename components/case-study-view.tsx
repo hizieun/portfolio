@@ -104,8 +104,8 @@ export function CaseStudyView({ study }: { study: CaseStudy }) {
             </div>
           )}
 
-          {/* EN-mode note: the long-form body is still Korean */}
-          {t.detail.enBanner && (
+          {/* Only warn when an English body genuinely isn't written yet */}
+          {lang === "en" && !study.contentEn && t.detail.enBanner && (
             <div className="flex items-start gap-2 rounded-lg border border-border bg-muted-bg/50 px-4 py-3 mb-8 text-sm text-muted">
               <Languages className="w-4 h-4 mt-0.5 shrink-0" />
               <span>{t.detail.enBanner}</span>
@@ -118,7 +118,7 @@ export function CaseStudyView({ study }: { study: CaseStudy }) {
               remarkPlugins={[remarkGfm]}
               rehypePlugins={[rehypeHighlight]}
             >
-              {study.content}
+              {(lang === "en" && study.contentEn) || study.content}
             </ReactMarkdown>
           </div>
 
