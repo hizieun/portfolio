@@ -3,6 +3,7 @@
 import Link from "next/link";
 import {
   ArrowRight,
+  FileText,
   Mail,
   MapPin,
   ExternalLink,
@@ -56,6 +57,12 @@ export function HomeView({ cards }: { cards: CaseStudyFrontmatter[] }) {
               className="inline-flex items-center gap-2 bg-accent text-accent-foreground px-5 py-2.5 rounded-lg font-medium hover:opacity-90 transition-opacity"
             >
               {t.hero.cta} <ArrowRight className="w-4 h-4" />
+            </Link>
+            <Link
+              href="/resume"
+              className="inline-flex items-center gap-2 border border-border px-5 py-2.5 rounded-lg font-medium hover:bg-muted-bg transition-colors"
+            >
+              <FileText className="w-4 h-4" /> {lang === "en" ? "Résumé" : "이력서"}
             </Link>
             <a
               href={`mailto:${p.email}`}

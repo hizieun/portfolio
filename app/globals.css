@@ -144,3 +144,45 @@ body {
   border-color: var(--border);
   margin: 2.5rem 0;
 }
+
+/* ── Résumé print layout (/resume) ────────────────────────────────────
+   Browser print-to-PDF is the PDF generator — no puppeteer/react-pdf.
+   ponytail: if a server-generated PDF is ever needed (e.g. emailing it
+   automatically), that's when to add a headless-chrome route. */
+@page {
+  size: A4;
+  margin: 0;
+}
+
+@media print {
+  html,
+  body {
+    background: #fff !important;
+    color: #000 !important;
+  }
+  /* force light tokens — dark-mode PDFs waste toner and read badly */
+  :root {
+    --background: #ffffff;
+    --foreground: #111111;
+    --muted: #555555;
+    --muted-bg: #ffffff;
+    --border: #cccccc;
+    --accent: #111111;
+    --accent-foreground: #ffffff;
+    --highlight: #1d4ed8;
+  }
+  .resume-sheet {
+    margin: 0 !important;
+    max-width: none !important;
+    box-shadow: none !important;
+    /* ponytail: last-mile fit-to-one-page. Content is tuned to ~1 A4 page;
+       this absorbs the remainder so it never spills a 2nd page with 3 lines.
+       If the résumé genuinely grows past one page, drop the zoom instead of
+       shrinking further. */
+    zoom: 0.92;
+  }
+  a {
+    color: inherit !important;
+    text-decoration: none !important;
+  }
+}
