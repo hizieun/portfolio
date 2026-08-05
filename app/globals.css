@@ -175,11 +175,10 @@ body {
     margin: 0 !important;
     max-width: none !important;
     box-shadow: none !important;
-    /* ponytail: last-mile fit-to-one-page. Content is tuned to ~1 A4 page;
-       this absorbs the remainder so it never spills a 2nd page with 3 lines.
-       If the résumé genuinely grows past one page, drop the zoom instead of
-       shrinking further. */
-    zoom: 0.92;
+  }
+  /* keep an entry's heading, dates and bullets together across a page break */
+  .resume-entry {
+    break-inside: avoid;
   }
   a {
     color: inherit !important;

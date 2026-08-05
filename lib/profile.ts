@@ -233,6 +233,16 @@ const profileKo = {
       period: "2025.12 – 현재",
       client: "KB증권" as string | null,
       highlight: "증권사 RAG 데이터 파이프라인 운영 및 고도화",
+      // `bullets` are résumé-only detail (the site shows `highlight`).
+      // Standalone-readable: a recruiter who never opens the URL still
+      // gets the depth.
+      bullets: [
+        "사내 AI 플랫폼 '깨비AI'의 4개 Agent(법무검토·고객상담·약정체크·코딩도움)를 받치는 3개 RAG 파이프라인(사내 KMS·펀드/ELS 상품·법령/판례) 운영·고도화",
+        "법령 수집을 수동 PDF 다운로드 → Open API 자동 적재로 전환하고, 해시·버전 기반 개정감지로 변경 조항만 incremental 재임베딩 (전체 재인덱싱 제거)",
+        "OpenSearch Bulk Insert 마이그레이션(배치 사이즈 튜닝·partial retry·throughput 계측)으로 배치 시간 단축, 야간 윈도우 내 안정 완료",
+        "RDS PostgreSQL 파이프라인 state 스키마 설계 — 개정감지→수집→파싱→청킹→적재 5단계 추적으로 재실행 지점 특정 및 idempotent 보장",
+        "marker/Surya OCR·LangChain 청킹·Titan Embeddings v2(Bedrock) 기반 적재, trace_id 로그 표준화로 장애 원인 모듈 식별 시간 단축",
+      ],
       current: true,
     },
     {
@@ -241,6 +251,12 @@ const profileKo = {
       period: "2025.06 – 2025.09",
       client: "현대캐피탈 (수행: AWS Korea)" as string | null,
       highlight: "사내 LLM 챗봇 플랫폼 0→1 — RAG 권한·AI Market·MCP",
+      bullets: [
+        "전 임직원 대상 사내 LLM 챗봇 플랫폼을 AWS Serverless(Lambda·AppSync GraphQL/WebSocket·DynamoDB·Bedrock·OpenSearch·Cognito·Step Functions)로 0→1 구축",
+        "RAG 문서별 권한 모델 설계 — accessRules(광역·조직·사용자 OR 결합 + DRM 직교 플래그) 스키마와 has_access 평가 로직, documents.py 26 커밋",
+        "AI Market(사내 챗봇 마켓플레이스) 백엔드 — DynamoDB 단일 테이블 설계로 메타데이터·즐겨찾기·리뷰·승인 통합, GSI 3개로 전 access pattern 단일 쿼리화",
+        "MCP 표준 발표 6개월 만에 사내 플랫폼에 도입 — Tools 테이블 → LangChain StructuredTool 동적 로딩으로 Bedrock 추론 파이프라인에 통합",
+      ],
       current: false,
     },
     {
@@ -249,6 +265,13 @@ const profileKo = {
       period: "2024.01 – 2025.03",
       client: null as string | null,
       highlight: "GPT-4o RAG Agent 리딩 — 정확도 +30%, 평가효율 +40%, 3사 시연",
+      bullets: [
+        "3인 팀 리딩 — 제조 생산 시뮬레이션 데이터를 자연어로 분석하는 RAG Agent(GPT-4o·LangGraph·Function Calling) 설계 및 응답 흐름 기획 주도",
+        "도메인 컨설턴트의 암묵지를 신호 트리·분석 함수·판단 매뉴얼 RAG·Instruction 4개 레이어로 구조화, 납기율·병목공정 등 10+ KPI 자동 응답 구현",
+        "GPU 없는 환경에서 OpenAI Q&A Fine-tuning + RAG 하이브리드 채택 — 응답 정확도 +30% (10문항 평가셋·컨설턴트 합의 채점, prototype 검증)",
+        "Ragas 기반 학습 QA 100건 자동 생성 + 컨설턴트 전수 검수 체계로 데이터 처리 효율 +40%, 평가셋은 leakage 방지 위해 별도 수작성",
+        "Flask → FastAPI 비동기 전환으로 Function Calling 동시 호출 latency 개선, 국내 대기업 3사 시연 및 특허 기획 참여",
+      ],
       current: false,
     },
     {
@@ -257,6 +280,12 @@ const profileKo = {
       period: "2022.05 – 2023.07",
       client: null as string | null,
       highlight: "대학 입학전형 OCR 시스템 — 수작업 대비 40% 단축, 특허 1건",
+      bullets: [
+        "3인 TF 딥러닝 리더 — 대학별로 양식이 다른 모집요강·학생부를 자동 인식·구조화하는 OCR 파이프라인 개발, 수작업 대비 입력 시간 40% 단축",
+        "한글 특화 OCR 모델 비교 실험 후 텍스트 정규화·키워드 추출 후처리 설계로 양식 편차 흡수, 모집단위·전형명 등 주요 필드 영역 인식 구조 구현",
+        "Flask 웹 프로토타입까지 직접 구현해 프론트엔드 연동 검증, 딥러닝 기반 OCR 특허 출원 1건 참여 (기술 문서 작성)",
+        "사내 딥러닝(CV) 스터디 팀장 및 기술 블로그 딥러닝 파트 담당",
+      ],
       current: false,
     },
     {
@@ -265,6 +294,12 @@ const profileKo = {
       period: "2020.04 – 2022.05",
       client: null as string | null,
       highlight: "치과 영상 AI — SSL 80%+ 정확도, 국제 학술지 2편 publish",
+      bullets: [
+        "4인 연구팀에서 데이터 처리·모델 실험 총괄 — 치과 파노라마 영상 기반 연령 예측 및 매복치 발치 난이도 판정 모델 개발 (병원 공동 연구)",
+        "LaplaceNet 기반 반지도학습 vs 지도학습 비교 실험 설계 — 소량 라벨만으로 지도학습 수준 80%+ 정확도 입증, 국제 학술지 2편 공동저자 (BMC Oral Health·DMFR 2023)",
+        "PyTorch 구현 + Ray 기반 하이퍼파라미터 탐색 자동화, ±3년 휴리스틱 그룹화로 임상 활용 가능한 정확도 범위 검증",
+        "YOLOv4 공사장 안전장비 탐지(NIPA), EfficientDet 치과질환 추론 API(NIA), KoBERTSum 문서 요약(행안부) 등 CV·NLP 다도메인 과제 수행",
+      ],
       current: false,
     },
   ],
@@ -383,6 +418,13 @@ const profileEn: typeof profileKo = {
       client: "KB Securities",
       highlight:
         "Operating and scaling a securities-domain RAG data pipeline backing KB's in-house AI agent suite",
+      bullets: [
+        "Operate and scale three RAG pipelines (internal-ops KMS, fund/ELS products, law/precedent) that serve as the data backbone for four agents on KB's internal AI platform",
+        "Replaced manual PDF downloads with Open API ingestion plus hash/version revision detection, so only amended provisions are re-embedded instead of full re-indexing",
+        "Migrated embedding loads to the OpenSearch Bulk API (batch-size tuning, partial retry, throughput metrics), cutting batch runtime to finish safely inside the nightly window",
+        "Designed the RDS PostgreSQL pipeline-state schema tracking five stages (revision detection → ingestion → parsing → chunking → load) for exact resume points and idempotent re-runs",
+        "Built ingestion on marker/Surya OCR, LangChain chunking, and Titan Embeddings v2 (Bedrock); standardized logs with a trace_id to cut incident triage time",
+      ],
       current: true,
     },
     {
@@ -392,6 +434,12 @@ const profileEn: typeof profileKo = {
       client: "Hyundai Capital (via AWS Korea)",
       highlight:
         "Built an internal LLM platform 0→1 — RAG document permissions, an in-house chatbot marketplace, and MCP tool integration",
+      bullets: [
+        "Built a company-wide internal LLM chatbot platform 0→1 on AWS Serverless (Lambda, AppSync GraphQL/WebSocket, DynamoDB, Bedrock, OpenSearch, Cognito, Step Functions)",
+        "Designed the per-document RAG permission model — an accessRules schema (broad · org · user OR-combined, plus an orthogonal DRM flag) and the has_access evaluation logic, 26 commits in documents.py",
+        "Owned the AI Market backend — a DynamoDB single-table design unifying metadata, bookmarks, reviews, and approvals, with 3 GSIs turning every access pattern into a single query",
+        "Adopted MCP six months after the standard shipped — Tools table → LangChain StructuredTool dynamic loading, wired into the Bedrock inference pipeline",
+      ],
       current: false,
     },
     {
@@ -401,6 +449,13 @@ const profileEn: typeof profileKo = {
       client: null,
       highlight:
         "Led a GPT-4o RAG agent — +30% answer accuracy, +40% eval throughput, demoed to 3 enterprises",
+      bullets: [
+        "Led a 3-person team building a RAG agent (GPT-4o, LangGraph, Function Calling) that answers natural-language questions over manufacturing simulation data",
+        "Structured consultants' tacit judgment into four layers — signal trees, analysis functions, heuristic-manual RAG, and instructions — covering 10+ auto-answered KPIs including on-time rate and bottleneck process",
+        "Chose an OpenAI Q&A fine-tuning + RAG hybrid under a no-GPU constraint, reaching +30% answer accuracy (10-question eval set, consensus-scored with consultants; prototype validation)",
+        "Built a Ragas pipeline generating 100 training QA pairs with full consultant review for +40% data-prep throughput, keeping the eval set hand-written to prevent leakage",
+        "Migrated Flask → async FastAPI to cut latency under concurrent Function Calling; demoed to 3 large Korean enterprises and contributed to patent planning",
+      ],
       current: false,
     },
     {
@@ -410,6 +465,12 @@ const profileEn: typeof profileKo = {
       client: null,
       highlight:
         "Built an admissions-document OCR system — cut manual entry time 40%, 1 patent filed",
+      bullets: [
+        "Deep-learning lead in a 3-person task force building an OCR pipeline that recognizes and structures admissions documents across school-specific formats, cutting manual entry time 40%",
+        "Benchmarked Korean-specialized OCR models, then designed text normalization and keyword-extraction post-processing to absorb format variance, plus region recognition for key fields",
+        "Built the Flask web prototype and validated frontend integration; contributed to one patent filing for the DL-based OCR system",
+        "Led the internal deep-learning (CV) study group and owned the DL section of the company tech blog",
+      ],
       current: false,
     },
     {
@@ -419,6 +480,12 @@ const profileEn: typeof profileKo = {
       client: null,
       highlight:
         "Dental-imaging AI — held 80%+ accuracy with SSL, 2 papers published in international journals",
+      bullets: [
+        "Led data processing and model experimentation in a 4-person research team building age-estimation and impacted-tooth difficulty models from dental panoramic radiographs (hospital collaboration)",
+        "Designed the LaplaceNet SSL vs. supervised comparison, showing 80%+ supervised-level accuracy from a small labeled set — co-author on 2 international journal papers (BMC Oral Health, DMFR 2023)",
+        "Implemented models in PyTorch with Ray-automated hyperparameter search; validated a clinically usable accuracy band via ±3-year heuristic grouping",
+        "Delivered multi-domain CV/NLP projects: YOLOv4 construction-site safety-gear detection (NIPA), EfficientDet dental-disease inference API (NIA), KoBERTSum document summarization (MOIS)",
+      ],
       current: false,
     },
   ],

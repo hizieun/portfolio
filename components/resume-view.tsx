@@ -117,7 +117,7 @@ export function ResumeView() {
         <Section title={t.experience}>
           <div className="space-y-2">
             {p.experience.map((e) => (
-              <div key={e.company} className="break-inside-avoid">
+              <div key={e.company} className="resume-entry break-inside-avoid">
                 <div className="flex items-baseline justify-between gap-3">
                   <div className="font-semibold">
                     {e.company}
@@ -138,7 +138,14 @@ export function ResumeView() {
                   </div>
                 </div>
                 <div className="text-[8.5pt] text-muted">{e.role}</div>
-                <div className="mt-0.5">{e.highlight}</div>
+                <ul className="mt-1 space-y-0.5">
+                  {e.bullets.map((b) => (
+                    <li key={b} className="flex gap-1.5">
+                      <span className="text-muted shrink-0">·</span>
+                      <span>{b}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
             ))}
           </div>
