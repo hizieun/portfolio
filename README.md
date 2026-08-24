@@ -1,6 +1,6 @@
 # 강지은 · AI Engineer Portfolio
 
-> 데이터의 가치를 구현하는 AI 엔지니어 — 6년차의 production AI 시스템 케이스 스터디.
+> 데이터의 가치를 구현하는 AI 엔지니어 — production AI 시스템 케이스 스터디.
 
 🌐 **Live**: [zieun.dev](https://zieun.dev)
 
@@ -10,7 +10,7 @@
 
 | 섹션 | 내용 |
 |---|---|
-| **Hero** | 한 줄 소개 + 상태(currently shipping) + 6년차 / 5+ 프로젝트 / 논문 2편 |
+| **Hero** | 한 줄 소개 + 상태(currently shipping) + 경력(자동 계산) / 5+ 프로젝트 / 논문 2편 |
 | **About** | 4대 핵심역량 — LLM/RAG · Python 백엔드 · AWS Serverless · Computer Vision |
 | **Experience** | 5개 회사 타임라인 (페르소나에이아이·아이티센·뉴로코어·진학사·자이플래닛) |
 | **Projects** | 5개 case study — NeuroCore RAG + Fine-tuning Agent, 현대캐피탈 AI Playground, KB증권 RAG, 진학사 OCR, 자이플래닛 치과 영상 AI |
@@ -40,9 +40,8 @@ Repository      GitHub (this repo)
 ├── app/
 │   ├── layout.tsx            # metadata + 폰트
 │   ├── page.tsx              # 단일 페이지 (Hero ~ Contact)
-│   ├── opengraph-image.tsx   # 동적 OG 이미지 (Node.js runtime, 번들된 Noto Sans KR)
+│   ├── opengraph-image.tsx   # OG 이미지 (Node.js runtime, public/fonts 서브셋 폰트)
 │   ├── twitter-image.tsx
-│   ├── _fonts/               # OG 이미지용 Noto Sans KR Bold TTF
 │   └── projects/[slug]/      # 케이스 스터디 상세 페이지
 ├── components/
 │   ├── site-header.tsx       # sticky 헤더 + 앵커 네비
@@ -51,6 +50,7 @@ Repository      GitHub (this repo)
 │   └── case-studies/         # 케이스 스터디 markdown (frontmatter + 본문)
 ├── lib/
 │   ├── profile.ts            # 이름·skills·experience·publications·사이드 단일 출처
+│   ├── career.ts             # experience에서 경력 연차·개월수 자동 산출
 │   ├── case-studies.ts       # markdown 로더 (최신순 정렬)
 │   └── utils.ts
 └── public/

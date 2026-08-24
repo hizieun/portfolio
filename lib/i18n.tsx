@@ -1,5 +1,6 @@
 "use client";
 
+import { career } from "@/lib/profile";
 import {
   createContext,
   useCallback,
@@ -107,7 +108,7 @@ export const ui: Record<Lang, UIStrings> = {
     sections: {
       aboutTitle: "About",
       experienceTitle: "Experience",
-      experienceSub: "총 5년 3개월 · 정규직 3곳, 프리랜서 2곳",
+      experienceSub: `총 ${career.ko} · 정규직 ${career.fullTime}곳, 프리랜서 ${career.contract}곳`,
       projectsTitle: "Featured Case Studies",
       projectsSub:
         "담당한 프로젝트를 최신순으로 정리했어요. 각 카드 클릭 시 상세 케이스 스터디로 이동합니다.",
@@ -140,7 +141,7 @@ export const ui: Record<Lang, UIStrings> = {
     sections: {
       aboutTitle: "About",
       experienceTitle: "Experience",
-      experienceSub: "5 yrs 3 mos total · 3 full-time, 2 contract",
+      experienceSub: `${career.en} total · ${career.fullTime} full-time, ${career.contract} contract`,
       projectsTitle: "Featured Case Studies",
       projectsSub: "My work, newest first. Click a card for the full case study.",
       sideTitle: "Building Outside Work",

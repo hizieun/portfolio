@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { LangProvider } from "@/lib/i18n";
+import { career } from "@/lib/profile";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -23,7 +24,7 @@ const siteUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL
 
 const title = "강지은 · AI Engineer Portfolio";
 const description =
-  "데이터의 가치를 구현하는 AI 엔지니어 강지은의 포트폴리오. LLM·RAG·Agent를 production까지 책임진 6년차의 케이스 스터디.";
+  `데이터의 가치를 구현하는 AI 엔지니어 강지은의 포트폴리오. LLM·RAG·Agent를 production까지 책임진 ${career.nthYear}년차의 케이스 스터디.`;
 
 export const metadata: Metadata = {
   title,

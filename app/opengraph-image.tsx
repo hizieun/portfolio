@@ -1,26 +1,28 @@
+import { readFile } from "node:fs/promises";
+import { join } from "node:path";
 import { ImageResponse } from "next/og";
+import { career } from "@/lib/profile";
 
 // Use nodejs runtime: the 10MB Korean font puts the function over Edge's
 // 1MB size limit on Vercel Hobby. OG images are CDN-cached so cold start
 // difference doesn't matter in practice.
 export const runtime = "nodejs";
 
-// Skip build-time prerender. The font loads via `new URL("./_fonts/...",
-// import.meta.url)` + fetch, which works at request time but not in the
-// build prerender (`fetch failed: not implemented... yet`). CDN cache
-// fills on first hit anyway.
-export const dynamic = "force-dynamic";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 export const alt = "강지은 · AI Engineer Portfolio";
 
-// Load Noto Sans KR variable font from the colocated _fonts/ dir.
-// We tried Google Fonts CSS fetching at request time but the Edge runtime
-// returned 200 + 0 bytes — likely because the CSS endpoint changed format
-// or the binary URL is blocked. Bundling a local TTF is the reliable path.
+// Read the font from public/ with fs — NOT fetch(new URL(...,
+// import.meta.url)): undici has no file: support ("not implemented...
+// yet"), which 500'd this route in dev and in the Docker image alike.
+// public/ is also the one asset dir the deploy Dockerfile copies.
+//
+// The font is a 30KB static subset (weight pinned to 700, only the glyphs
+// this card draws). The original 10MB *variable* Noto Sans KR broke satori
+// outright — regenerate with tools/subset-og-font.py if the card's copy
+// gains new characters.
 async function loadFont() {
-  const url = new URL("./_fonts/NotoSansKR-Bold.ttf", import.meta.url);
-  return fetch(url).then((r) => r.arrayBuffer());
+  return readFile(join(process.cwd(), "public/fonts/NotoSansKR-OG.ttf"));
 }
 
 export default async function OG() {
@@ -127,7 +129,7 @@ export default async function OG() {
               <div
                 style={{ fontSize: "36px", fontWeight: 700, display: "flex" }}
               >
-                6년차
+                {`${career.nthYear}년차`}
               </div>
               <div
                 style={{ fontSize: "16px", color: "#a1a1aa", display: "flex" }}
