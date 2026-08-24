@@ -83,8 +83,9 @@ const sideProjectsBase = {
       "Gemini 2.5 Flash",
       "arXiv Atom API",
       "HuggingFace API",
-      "Docker",
-      "GHCR",
+      "Supabase (Postgres · Auth · RLS)",
+      "GitHub OAuth",
+      "PWA",
     ],
   },
   noodle: {
@@ -236,14 +237,14 @@ const profileKo = {
     {
       ...sideProjectsBase.myArxiv,
       name: "my-arxiv 📰",
-      tagline: "관심 분야의 신규 논문을 한 곳에서 — Gemini로 한국어 요약까지",
+      tagline: "논문 디스커버리부터 학습 공유까지 — 한국어 요약·Q&A가 붙은 커뮤니티",
       description:
-        "arXiv + HuggingFace Daily Papers를 통합 피드로 머지하고, Gemini 2.5 Flash로 abstract를 한국어 요약. 카테고리 토글·통합 검색·노트·읽음 기록까지 자체 디스커버리 워크플로우.",
+        "arXiv + HuggingFace Daily Papers를 통합 피드로 머지하고, Gemini 2.5 Flash가 논문 본문(arxiv.org/html, 없으면 abstract 폴백)을 근거로 구조화 한국어 요약과 자유 Q&A를 제공. 근거 밖 내용은 답하지 않도록 프롬프트 가드. 노트·읽음 추적에 더해 Supabase Auth·RLS 기반 학습 글 커뮤니티(댓글·좋아요·프로필·이미지 업로드)까지 확장했어요.",
       highlights: [
+        "본문 기반 요약 · Q&A",
         "arXiv + HF 통합 피드",
-        "Gemini 한국어 요약",
-        "Notes & 읽음 추적",
-        "Bio · 뇌과학 포함",
+        "커뮤니티 (RLS 권한)",
+        "PWA · 오프라인 캐시",
       ],
     },
     {
@@ -319,10 +320,10 @@ const profileEn: typeof profileKo = {
   ...contact,
   tagline: "AI Engineer shipping LLM systems to production",
   subtagline:
-    `${career.years}+ years taking RAG, agents, and MLOps from prototype to production — across finance, edtech, and healthcare.`,
+    `${career.spanYears}+ years taking RAG, agents, and MLOps from prototype to production — across finance, edtech, and healthcare.`,
 
   stats: [
-    { label: "Experience", value: `${career.years}+ yrs` },
+    { label: "Experience", value: `${career.spanYears}+ yrs` },
     { label: "Production AI projects", value: "5+" },
     { label: "Papers published", value: "2" },
   ],
@@ -340,14 +341,14 @@ const profileEn: typeof profileKo = {
     {
       ...sideProjectsBase.myArxiv,
       name: "my-arxiv 📰",
-      tagline: "New papers in your fields, in one feed — Korean summaries via Gemini",
+      tagline: "From paper discovery to shared learning — Korean summaries, grounded Q&A, community",
       description:
-        "Merges arXiv + HuggingFace Daily Papers into one feed and summarizes abstracts in Korean with Gemini 2.5 Flash. A personal discovery workflow with category toggles, unified search, notes, and read-tracking.",
+        "Merges arXiv + HuggingFace Daily Papers into one feed, then has Gemini 2.5 Flash produce structured Korean summaries and answer free-form questions — grounded in the paper's full text (arxiv.org/html, falling back to the abstract), with prompt guards against answering beyond the source. Beyond notes and read-tracking, it now hosts a study-writeup community on Supabase Auth + RLS (comments, likes, profiles, image uploads).",
       highlights: [
+        "Full-text summary & Q&A",
         "arXiv + HF feed",
-        "Gemini KO summary",
-        "Notes & read-tracking",
-        "incl. bio · neuro",
+        "Community (RLS auth)",
+        "PWA · offline cache",
       ],
     },
     {
