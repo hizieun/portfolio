@@ -124,6 +124,17 @@ That separation shows *where the performance actually comes from*. *At prototype
 
 > **Evaluation is part of the product** — the biggest lesson from this project. And a second one: *prototype numbers are evidence of possibility, not production results.*
 
+### So I actually built it — the retrospective, validated in a side project
+
+Rather than leaving this as a note-to-self, I built [an evaluation harness](https://github.com/hizieun/noodle-app/tree/main/eval) for the RAG chatbot in my side project, Nopo Map: a 149-question golden set (124 stratified + 25 adversarial), dual judging (deterministic hallucination detection + LLM-as-judge), and a regression gate in CI.
+
+It confronts the two things I missed at NeuroCore:
+
+1. **Sample size and significance** — where I couldn't answer "is +30% on 10 questions significant?", the harness now runs the same set k=3 times, measures the standard deviation of each metric, and sets the regression threshold at 2σ *from data rather than instinct*.
+2. **Trusting the instrument** — how do you know an accuracy gain isn't just a broken measuring tool? A **negative control** (synthetic violations injected to prove the detector actually fires) and **pinned fixtures** (if a prompt change alters the response format, the extractor test fails before any metric moves) guarantee that when a number moves, it's performance that moved.
+
+That first trap in particular — *"0% hallucination" being indistinguishable from a detector that does nothing* — is something I didn't even recognize as a problem back at NeuroCore.
+
 ## Role
 
 In a 3-person team I led **prompt design, query-based scenario writing, and chatbot response-flow planning**. I owned the RAG agent architecture, the Function Calling structure, the instruction/knowledge docs, **the OpenAI Q&A fine-tuning training-data design and review (Ragas generation + consultant consensus)**, and the evaluation infrastructure. Also contributed to the patent-planning stage.
