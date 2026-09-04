@@ -6,7 +6,7 @@ When I joined KB Securities the RAG pipeline was already running. The mission wa
 Three streams:
 - **Internal-ops KMS** — so employees can find work manuals and policies fast
 - **Fund / ELS product embeddings** — the RAG corpus used to *explain products* to customers
-- **Law / precedent (legal-review agent)** — *periodically amended* regulatory data, tracked and re-embedded automatically
+- **Law / precedent / administrative rules (legal-review agent)** — *periodically amended* regulatory data, tracked and re-embedded automatically. **The one pipeline I owned end to end — analysis, design, build, and operation**
 
 Each stream differs in data shape, refresh cadence, and accuracy requirement — and because it's *securities*, the compliance bar differs from ordinary RAG.
 
@@ -36,13 +36,18 @@ For employees; work manuals and policy documents are the primary data. The refre
 
 Customer-facing product explanations. Mostly *structured and semi-structured PDFs* — fund terms, ELS product disclosures. Dense with tables, footnotes, and disclaimers, so *preserving document structure* matters far more than plain text extraction. Powers fund, bond, pension, and futures questions in the **customer-consultation agent**.
 
-### 3) Law / precedent · *legal-review agent backbone*
+### 3) Law / precedent / administrative rules · *legal-review agent backbone* — sole ownership
 
-A new use case. A pipeline that *periodically refreshes* the law and precedent corpus behind the **legal-review agent** (contract review, KO↔EN translation, finance/legal Q&A). Two things set it apart from the existing systems:
+A new use case, and the one stream of the three I owned **from data analysis and index design through build and operation**. It *periodically refreshes* the regulatory corpus behind the **legal-review agent** (contract review, KO↔EN translation, finance/legal Q&A).
+
+It started with statutes and precedent, then **expanded to administrative rules** (directives, established rules, public notices). Financial practice rests as much on regulator-issued administrative rules as on statute text, so a statute-only corpus leaves gaps exactly where a legal-review answer needs grounding.
+
+Three things set it apart from the existing systems:
 
 - **Manual PDF downloads → automated Open API ingestion** — someone used to fetch PDFs from a site and index them by hand every cycle; that's now an API call. Human time narrows from *repetitive work* to *exception handling*
 - **Revision detection** — laws change often. Logic that picks out only amended provisions for incremental update, cutting full-reprocessing cost
 - **Index standardization** — the legacy law index diverged from the standard schema, making search and maintenance painful; unified it with the same structure as the other corpora
+- **A new administrative-rules pipeline** — different issuing bodies, amendment cadence, and document structure from statutes, so it needed its own ingestion adapter and chunking strategy, landed on the same index schema
 
 ### The tools behind it
 
@@ -108,7 +113,7 @@ Operational payoff:
 
 In progress. Where it's heading:
 
-- **Stabilize the legal-review agent pipeline** — move the law/precedent automation now in development into steady-state operation
+- **Stabilize the legal-review agent pipeline** — settle the law / precedent / administrative-rules automation into steady-state operation
 - **Extend revision detection to other corpora** — apply the same incremental-update pattern to fund/ELS terms (currently full reprocessing)
 - **Establish an evaluation pipeline** — combine *domain-expert review* of fund/ELS and legal answers with automated datasets (the LLM-as-judge hybrid pattern I learned at NeuroCore applies directly)
 - **Compliance traceability** — strengthen audit trails for *which chunk of which document* a RAG answer cited
@@ -117,6 +122,10 @@ In progress. Where it's heading:
 ## Role
 
 Contracting through PersonaAI, embedded at KB Securities. As a **data-team engineer** I own **operating and scaling** the RAG data pipelines — raising performance and stability *without breaking* an already-deployed system.
+
+Scope differs by stream:
+- **KMS · fund/ELS** — operating pipelines that were already running, and improving their performance and stability
+- **Law · precedent · administrative rules** — **sole ownership across every stage**: data analysis → index design → build → operation. The Open-API ingestion, revision detection, PostgreSQL state schema, and the administrative-rules expansion all came out of that scope.
 
 > *"Making a running system run better is sometimes harder than building one that isn't running yet."*
 

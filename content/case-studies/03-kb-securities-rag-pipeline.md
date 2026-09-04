@@ -2,8 +2,8 @@
 slug: kb-securities-rag-pipeline
 title: 증권사 RAG 데이터 파이프라인 운영 & 고도화
 title_en: "Operating & Scaling a Securities RAG Pipeline"
-subtitle: 사내 KMS · 금융상품 · 법령/판례 세 갈래 파이프라인 운영과 자동화
-subtitle_en: "Running and automating three pipelines — internal KMS, financial products, and law/precedent"
+subtitle: 사내 KMS · 금융상품 · 법령/판례/행정규칙 세 갈래 파이프라인 운영과 자동화
+subtitle_en: "Running and automating three pipelines — internal KMS, financial products, and law/precedent/administrative rules"
 company: KB증권 (페르소나에이아이 소속, 프리랜서)
 company_en: "KB Securities (via PersonaAI · contract)"
 role: AI/Backend Engineer (대리, 데이터팀)
@@ -13,8 +13,8 @@ period_en: "Dec 2025 – Present"
 duration: ongoing
 domain: Financial Services / Securities
 status: 🚧 Currently Shipping
-tldr: KB증권 사내 운영지원 KMS, 고객 대상 펀드/ELS 상품 설명, 법무검토 에이전트용 법령·판례 세 갈래의 RAG 데이터 파이프라인 운영·고도화. 수동 PDF 다운로드 → Open API + 개정감지 자동화, OpenSearch Bulk Insert 도입, PostgreSQL 기반 파이프라인 state 관리.
-tldr_en: "Operating and scaling three RAG data pipelines at KB Securities — internal-ops KMS, fund/ELS product info, and law/precedent for the legal-review agent. Automated manual PDF downloads into an Open-API + revision-detection flow, adopted OpenSearch bulk insert, and designed PostgreSQL-based pipeline state management."
+tldr: KB증권 사내 운영지원 KMS, 고객 대상 펀드/ELS 상품 설명, 법무검토 에이전트용 법령·판례·행정규칙 세 갈래의 RAG 데이터 파이프라인 운영·고도화. 법령 계열 파이프라인은 데이터 분석·설계부터 개발·운영까지 단독 담당. 수동 PDF 다운로드 → Open API + 개정감지 자동화, OpenSearch Bulk Insert 도입, PostgreSQL 기반 파이프라인 state 관리.
+tldr_en: "Operating and scaling three RAG data pipelines at KB Securities — internal-ops KMS, fund/ELS product info, and law/precedent/administrative rules for the legal-review agent, the last of which I own end to end from analysis and design through build and operation. Automated manual PDF downloads into an Open-API + revision-detection flow, adopted OpenSearch bulk insert, and designed PostgreSQL-based pipeline state management."
 stack:
   llm: [Amazon Bedrock, Titan Embeddings v2, LangChain]
   ingestion: [marker, Surya OCR, LangChain Splitter, Token chunking]
@@ -31,7 +31,7 @@ KB증권에 들어갔을 땐 RAG 파이프라인이 이미 돌고 있었습니�
 세 갈래로 흐릅니다:
 - **사내 운영지원 KMS** — 내부 임직원이 업무 매뉴얼·정책을 빠르게 찾을 수 있게
 - **펀드 / ELS 상품 임베딩** — 고객에게 *상품을 설명*하기 위한 RAG 코퍼스
-- **법령 / 판례 (법무검토 에이전트)** — *주기적으로 개정되는* 규제 데이터를 자동으로 추적·재임베딩
+- **법령 / 판례 / 행정규칙 (법무검토 에이전트)** — *주기적으로 개정되는* 규제 데이터를 자동으로 추적·재임베딩. **분석·설계·개발·운영 전 단계를 직접 담당한 파이프라인**
 
 각 갈래마다 데이터 특성·갱신 주기·정확도 요구가 다르고, *증권 도메인*이라 컴플라이언스 기준이 일반 RAG와 다릅니다.
 
@@ -61,13 +61,18 @@ KB증권에 들어갔을 땐 RAG 파이프라인이 이미 돌고 있었습니�
 
 고객 대상 상품 설명용. 펀드 약관, ELS 상품설명서 등 *PDF로 내려오는 정형/반정형 문서*가 대부분. 표·각주·면책조항이 많아 일반 텍스트 추출보다 *문서 구조 보존*이 중요합니다. **고객상담 Agent**의 펀드·채권·연금·선물 등 금융상품 질의 응답에 활용.
 
-### 3) 법령 / 판례 · *법무검토 Agent backbone*
+### 3) 법령 / 판례 / 행정규칙 · *법무검토 Agent backbone* — 단독 오너십
 
-신규 use case. **법무검토 Agent** (계약서 법무검토 · 한영번역 · 금융/법무 질의)의 backbone이 되는 법령·판례 RAG 코퍼스를 *주기적으로 갱신*하는 파이프라인. 기존 시스템과 가장 다른 두 가지:
+신규 use case이자 **세 갈래 중 유일하게 데이터 분석·설계부터 개발·운영까지 제가 전부 맡은 파이프라인**입니다. **법무검토 Agent** (계약서 법무검토 · 한영번역 · 금융/법무 질의)의 backbone이 되는 규제 코퍼스를 *주기적으로 갱신*합니다.
+
+법령·판례로 시작해 **행정규칙(훈령·예규·고시)까지 확장**했어요. 금융 실무의 판단 근거가 법률 조문만이 아니라 감독기관의 행정규칙에도 걸쳐 있기 때문에, 법령만으로는 법무검토 답변의 근거가 비는 구간이 생깁니다.
+
+기존 시스템과 가장 다른 세 가지:
 
 - **수동 PDF 다운로드 → Open API 자동 적재** — 누군가 매번 사이트에서 PDF를 받아와 인덱싱하던 흐름을 Open API 호출로 대체. 사람의 시간을 *반복 작업*에서 *예외 처리*로만 좁힘
 - **개정감지 (revision detection)** — 법령은 자주 바뀝니다. 변경된 조항만 골라 incremental update 하는 로직으로 전체 재처리 비용을 ↓
 - **인덱스 표준화** — 기존 법령 인덱스가 표준 스키마와 어긋나 검색·유지보수가 어려웠던 부분을, 다른 코퍼스와 동일한 구조로 통합
+- **행정규칙 파이프라인 신규 구축** — 법령과 발행 주체·개정 주기·문서 구조가 달라, 수집 어댑터와 청킹 전략을 별도로 설계해 같은 인덱스 스키마 위에 올림
 
 ### 이걸 푸는 도구들
 
@@ -133,7 +138,7 @@ RDS PostgreSQL 스키마를 직접 설계해 각 데이터 항목의 라이프�
 
 현재 진행 중. 앞으로의 방향은:
 
-- **법무검토 에이전트 파이프라인 안정화** — 현재 개발 중인 법령·판례 자동화 파이프라인의 운영 단계 진입
+- **법무검토 에이전트 파이프라인 안정화** — 법령·판례·행정규칙 자동화 파이프라인의 운영 단계 안착
 - **개정감지 → 다른 코퍼스로 확장** — 펀드/ELS 약관에도 동일한 incremental update 패턴 적용 (지금은 전체 재처리)
 - **평가 파이프라인 정착** — 펀드/ELS·법령 응답의 정확도를 *도메인 전문가가 검수*하는 사이클을 자동화 데이터셋과 결합 (NeuroCore에서 배운 LLM-as-Judge 하이브리드 패턴 적용 가능)
 - **컴플라이언스 추적** — RAG 응답에 *어떤 문서의 어떤 청크가 인용됐는지* 감사 추적 강화
@@ -142,6 +147,10 @@ RDS PostgreSQL 스키마를 직접 설계해 각 데이터 항목의 라이프�
 ## Role
 
 페르소나에이아이 소속 프리랜서로 KB증권에 파견. **데이터팀 대리**로 RAG 데이터 파이프라인의 **운영 + 고도화**를 담당. 이미 배포된 시스템을 *깨뜨리지 않으면서* 성능과 안정성을 끌어올리는 게 본질.
+
+담당 범위는 갈래마다 다릅니다:
+- **KMS · 펀드/ELS** — 이미 돌던 파이프라인의 운영과 성능·안정성 고도화
+- **법령 · 판례 · 행정규칙** — *데이터 분석 → 인덱스 설계 → 개발 → 운영*까지 **전 단계 단독 담당**. Open API 적재·개정감지·PostgreSQL state 스키마·행정규칙 확장이 모두 이 범위 안에서 나왔습니다.
 
 > *"안 돌고 있는 시스템을 만드는 것보다, 돌고 있는 시스템을 더 잘 돌게 만드는 것이 어려울 때가 있다."*
 
