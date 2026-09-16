@@ -50,6 +50,7 @@ const skills = {
     "AWS Glue",
     "DynamoDB",
     "OpenSearch",
+    "pandas",
     "PostgreSQL · MySQL · MSSQL · Teradata",
     "Python (FastAPI, Flask)",
     "TypeScript / Node.js",
@@ -139,13 +140,15 @@ const experienceKo = [
       role: "데이터팀 · 대리 (프리랜서)",
       period: "2025.12 – 현재",
       client: "KB증권" as string | null,
-      highlight: "증권사 RAG 데이터 파이프라인 운영 및 고도화",
+      highlight: "증권사 AI 에이전트 데이터 파이프라인 4종 운영·고도화 (법령·국제금리는 단독 설계)",
       // `bullets` are résumé-only detail (the site shows `highlight`).
       // Standalone-readable: a recruiter who never opens the URL still
       // gets the depth.
       bullets: [
-        "사내 AI 플랫폼 '깨비AI'의 4개 Agent(법무검토·고객상담·약정체크·코딩도움)를 받치는 3개 RAG 파이프라인(사내 KMS·펀드/ELS 상품·법령/판례/행정규칙) 운영·고도화",
+        "사내 AI 플랫폼 '깨비AI'의 Agent(법무검토·고객상담·약정체크·코딩도움·투자분석)를 받치는 4개 데이터 파이프라인(사내 KMS·펀드/ELS 상품·법령/판례/행정규칙·국제금리) 운영·고도화",
         "법무검토 Agent용 법령 계열 파이프라인은 데이터 분석·인덱스 설계부터 개발·운영까지 단독 담당 — 법령·판례에 이어 행정규칙(훈령·예규·고시)까지 코퍼스 확장",
+        "투자분석 Agent용 국제금리 파이프라인 단독 설계·구축 (2026.09 배포) — 한국은행 ECOS API로 20개국 장·단기 금리를 연/분기/월 3주기 수집(초기 3,610건·일 760건), 주기 간 값 관계 3종을 직접 검증해 파생 계산이 불가함을 확인하고 3주기 개별 수집 구조로 결정",
+        "ECOS가 잠정치를 사후 정정하면서 갱신 시점을 제공하지 않는 특성을 근거로 직전 1년 DELETE+INSERT 재적재 + PK 스냅샷 diff 정정 추적 설계, 응답 구조 분석으로 국가별 루프를 제거해 주기당 1회 호출로 수집 (AWS Glue 일배치·Secrets Manager)",
         "법령 수집을 수동 PDF 다운로드 → Open API 자동 적재로 전환하고, 해시·버전 기반 개정감지로 변경 조항만 incremental 재임베딩 (전체 재인덱싱 제거)",
         "OpenSearch Bulk Insert 마이그레이션(배치 사이즈 튜닝·partial retry·throughput 계측)으로 배치 시간 단축, 야간 윈도우 내 안정 완료",
         "RDS PostgreSQL 파이프라인 state 스키마 설계 — 개정감지→수집→파싱→청킹→적재 5단계 추적으로 재실행 지점 특정 및 idempotent 보장",
@@ -427,10 +430,12 @@ const profileEn: typeof profileKo = {
       period: "Dec 2025 – Present",
       client: "KB Securities",
       highlight:
-        "Operating and scaling a securities-domain RAG data pipeline backing KB's in-house AI agent suite",
+        "Operating and scaling four data pipelines behind KB's in-house AI agent suite — sole owner of the legal and interest-rate pipelines",
       bullets: [
-        "Operate and scale three RAG pipelines (internal-ops KMS, fund/ELS products, law/precedent/administrative rules) that serve as the data backbone for four agents on KB's internal AI platform",
+        "Operate and scale four data pipelines (internal-ops KMS, fund/ELS products, law/precedent/administrative rules, global interest rates) backing the agents on KB's internal AI platform — legal review, customer consultation, agreement checking, coding assistance, investment analysis",
         "Sole owner of the legal corpus pipeline behind the legal-review agent — data analysis and index design through build and operation; extended it from statutes and precedent to administrative rules (directives, established rules, public notices)",
+        "Designed and shipped the global interest-rate pipeline behind the investment-analysis agent solo (Sep 2026) — Bank of Korea ECOS API, 20 countries × long/short-term × annual/quarterly/monthly (3,610 rows initially, 760 per daily batch); verified three cross-cycle relationships to prove derivation was impossible, so each cycle is collected directly",
+        "Chose DELETE+INSERT re-loading of the trailing 12 months with PK snapshot diffs for revision tracking, since ECOS revises provisional values without exposing when; cut calls ~20x by dropping the per-country loop after analyzing the response shape (AWS Glue daily batch, Secrets Manager)",
         "Replaced manual PDF downloads with Open API ingestion plus hash/version revision detection, so only amended provisions are re-embedded instead of full re-indexing",
         "Migrated embedding loads to the OpenSearch Bulk API (batch-size tuning, partial retry, throughput metrics), cutting batch runtime to finish safely inside the nightly window",
         "Designed the RDS PostgreSQL pipeline-state schema tracking five stages (revision detection → ingestion → parsing → chunking → load) for exact resume points and idempotent re-runs",

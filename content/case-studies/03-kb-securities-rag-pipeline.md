@@ -1,9 +1,9 @@
 ---
 slug: kb-securities-rag-pipeline
-title: 증권사 RAG 데이터 파이프라인 운영 & 고도화
-title_en: "Operating & Scaling a Securities RAG Pipeline"
-subtitle: 사내 KMS · 금융상품 · 법령/판례/행정규칙 세 갈래 파이프라인 운영과 자동화
-subtitle_en: "Running and automating three pipelines — internal KMS, financial products, and law/precedent/administrative rules"
+title: 증권사 AI 에이전트 데이터 파이프라인 운영 & 고도화
+title_en: "Operating & Scaling Data Pipelines for Securities AI Agents"
+subtitle: 사내 KMS · 금융상품 · 법령/판례/행정규칙 · 국제금리 네 갈래 파이프라인 운영과 자동화
+subtitle_en: "Running and automating four pipelines — internal KMS, financial products, law/precedent/administrative rules, and global interest rates"
 company: KB증권 (페르소나에이아이 소속, 프리랜서)
 company_en: "KB Securities (via PersonaAI · contract)"
 role: AI/Backend Engineer (대리, 데이터팀)
@@ -13,31 +13,32 @@ period_en: "Dec 2025 – Present"
 duration: ongoing
 domain: Financial Services / Securities
 status: 🚧 Currently Shipping
-tldr: KB증권 사내 운영지원 KMS, 고객 대상 펀드/ELS 상품 설명, 법무검토 에이전트용 법령·판례·행정규칙 세 갈래의 RAG 데이터 파이프라인 운영·고도화. 법령 계열 파이프라인은 데이터 분석·설계부터 개발·운영까지 단독 담당. 수동 PDF 다운로드 → Open API + 개정감지 자동화, OpenSearch Bulk Insert 도입, PostgreSQL 기반 파이프라인 state 관리.
-tldr_en: "Operating and scaling three RAG data pipelines at KB Securities — internal-ops KMS, fund/ELS product info, and law/precedent/administrative rules for the legal-review agent, the last of which I own end to end from analysis and design through build and operation. Automated manual PDF downloads into an Open-API + revision-detection flow, adopted OpenSearch bulk insert, and designed PostgreSQL-based pipeline state management."
+tldr: KB증권 사내 운영지원 KMS, 고객 대상 펀드/ELS 상품 설명, 법무검토 에이전트용 법령·판례·행정규칙, 투자분석 에이전트용 국제금리 — 네 갈래 데이터 파이프라인 운영·고도화. 법령 계열과 국제금리 파이프라인은 데이터 분석·설계부터 개발·운영까지 단독 담당. 수동 PDF 다운로드 → Open API + 개정감지 자동화, OpenSearch Bulk Insert 도입, PostgreSQL 기반 파이프라인 state 관리.
+tldr_en: "Operating and scaling four data pipelines at KB Securities — internal-ops KMS, fund/ELS product info, law/precedent/administrative rules for the legal-review agent, and global interest rates for the investment-analysis agent. I own the last two end to end, from analysis and design through build and operation. Automated manual PDF downloads into an Open-API + revision-detection flow, adopted OpenSearch bulk insert, and designed PostgreSQL-based pipeline state management."
 stack:
   llm: [Amazon Bedrock, Titan Embeddings v2, LangChain]
-  ingestion: [marker, Surya OCR, LangChain Splitter, Token chunking]
+  ingestion: [marker, Surya OCR, LangChain Splitter, Token chunking, ECOS Open API (한국은행)]
   search: [OpenSearch]
   data: [AWS RDS (PostgreSQL), Teradata, S3]
   ops: [AWS SageMaker, AWS Glue, CloudWatch]
-  language: [Python]
+  language: [Python, pandas]
 ---
 
 ## TL;DR
 
 KB증권에 들어갔을 땐 RAG 파이프라인이 이미 돌고 있었습니다. 미션은 *처음부터 만들기*가 아니라 **운영하면서 파이프라인 자체를 고도화**하는 것 — 이미 돌아가는 시스템의 병목을 식별하고, 운영 안정성을 끌어올리고, *수동 작업을 자동화*하는 작업입니다.
 
-세 갈래로 흐릅니다:
+네 갈래로 흐릅니다:
 - **사내 운영지원 KMS** — 내부 임직원이 업무 매뉴얼·정책을 빠르게 찾을 수 있게
 - **펀드 / ELS 상품 임베딩** — 고객에게 *상품을 설명*하기 위한 RAG 코퍼스
-- **법령 / 판례 / 행정규칙 (법무검토 에이전트)** — *주기적으로 개정되는* 규제 데이터를 자동으로 추적·재임베딩. **분석·설계·개발·운영 전 단계를 직접 담당한 파이프라인**
+- **법령 / 판례 / 행정규칙 (법무검토 에이전트)** — *주기적으로 개정되는* 규제 데이터를 자동으로 추적·재임베딩. **분석·설계·개발·운영 전 단계를 직접 담당**
+- **국제금리 (투자분석 에이전트)** — 한국은행 ECOS의 주요국 장·단기 금리를 20개국 × 3주기로 수집·적재하는 **정형 시계열** 파이프라인. 역시 **전 단계 단독 담당**
 
-각 갈래마다 데이터 특성·갱신 주기·정확도 요구가 다르고, *증권 도메인*이라 컴플라이언스 기준이 일반 RAG와 다릅니다.
+앞의 세 갈래가 *비정형 문서 → 임베딩*이라면 네 번째는 *정형 통계 → 관계형 적재*로 성격이 다릅니다. 갈래마다 데이터 특성·갱신 주기·정확도 요구가 다르고, *증권 도메인*이라 컴플라이언스 기준이 일반 RAG와 다릅니다.
 
 ## Product Context — 깨비AI를 받쳐주는 데이터 백본
 
-이 파이프라인이 흘러가는 곳은 **KB증권의 사내 AI 플랫폼 "깨비AI"**. 임직원이 쓰는 다중 Agent 시스템(법무검토 · 고객상담 · 약정체크 · 코딩도움 등)에 *RAG 코퍼스를 공급*하는 게 본 작업의 역할입니다.
+이 파이프라인이 흘러가는 곳은 **KB증권의 사내 AI 플랫폼 "깨비AI"**. 임직원이 쓰는 다중 Agent 시스템(법무검토 · 고객상담 · 약정체크 · 코딩도움 · 투자분석 등)에 *답변의 근거가 되는 데이터를 공급*하는 게 본 작업의 역할입니다 — 비정형 문서는 RAG 코퍼스로, 시장 통계는 정형 테이블로.
 
 제품 단의 Agent들이 의미 있는 답을 내려면 결국 *데이터가 잘 정리·갱신되어 있어야* 한다 — *제품 기능을 보이지 않게 받치는 데이터 인프라*가 본 케이스 스터디의 본질.
 
@@ -51,7 +52,7 @@ KB증권에 들어갔을 땐 RAG 파이프라인이 이미 돌고 있었습니�
 
 들어가서 가장 먼저 한 일은 **현재 파이프라인의 신호를 읽는 것** — 배치 처리 시간, 실패율, 로그 패턴, 알람 빈도. 그 신호들 안에서 *고도화가 가장 효과적인 지점*을 골랐습니다.
 
-## Approach — 세 갈래의 임베딩 파이프라인
+## Approach — 네 갈래의 데이터 파이프라인
 
 ### 1) 사내 운영지원 KMS · *고객상담 Agent backbone*
 
@@ -73,6 +74,50 @@ KB증권에 들어갔을 땐 RAG 파이프라인이 이미 돌고 있었습니�
 - **개정감지 (revision detection)** — 법령은 자주 바뀝니다. 변경된 조항만 골라 incremental update 하는 로직으로 전체 재처리 비용을 ↓
 - **인덱스 표준화** — 기존 법령 인덱스가 표준 스키마와 어긋나 검색·유지보수가 어려웠던 부분을, 다른 코퍼스와 동일한 구조로 통합
 - **행정규칙 파이프라인 신규 구축** — 법령과 발행 주체·개정 주기·문서 구조가 달라, 수집 어댑터와 청킹 전략을 별도로 설계해 같은 인덱스 스키마 위에 올림
+
+### 4) 국제금리 · *투자분석 Agent backbone* — 단독 오너십
+
+2026.09 설계·배포한 신규 파이프라인. 한국은행 **ECOS Open API**의 주요국제금리(통계표 902Y023, OECD 기준 시장금리)를 수집·적재합니다. 대상은 **장기(IRLT, 10년 국채) / 단기(IR3TIB, 3개월 CD·은행간) × 20개국 × 연·분기·월 3주기**.
+
+앞의 세 갈래와 달리 *비정형 문서 → 임베딩*이 아니라 *정형 통계 → 관계형 적재*라, 설계 판단의 결이 달랐습니다.
+
+**설계 근거를 추측이 아니라 검증으로 확보**
+
+파이프라인 구조를 정하기 전에 데이터부터 확인했습니다. "월별만 모아서 연·분기를 계산하면 되지 않나"가 자연스러운 가정이지만, 검증 결과 성립하지 않았어요:
+
+| 검증한 가설 | 결과 |
+|---|---|
+| 연간값 = 12월값 | 불일치 |
+| 분기값 = 분기말월값 | 불일치 |
+| 분기값 = 3개월 평균 | 불일치 |
+
+→ **파생 계산 불가**. 연·분기·월을 각각 수집하는 구조로 결정했습니다. 이 검증이 없었으면 "월만 모으고 나머지는 계산" 구조로 갔다가 값이 틀어졌을 겁니다.
+
+이어서 **20개국 × 장/단기 × 3주기 전 조합을 멀티스레드로 결측 점검**해, 누락 10건을 세 유형으로 분류했습니다 — *미제공*(브라질 단기는 전 기간 없음), *중단·지연*(인도네시아 2024-12 이후), *중간 결측*(멕시코 장기 142건). 유형이 다르면 대응도 달라서, 알람으로 볼 것과 정상으로 받아들일 것을 가릅니다.
+
+적재 규모도 사전 산정했습니다: **초기 3,610건**(연 400 · 분기 802 · 월 2,408), **일 배치 760건**.
+
+**API 응답 구조 분석 → 호출 수 20분의 1**
+
+항목코드를 지정하지 않고 호출하면 *장/단기 × 전체 국가*가 한 응답에 담겨 오는 것을 확인했습니다. 국가별 루프를 제거하고 **주기당 1회 호출로 전량 수집**하는 구조로 바꿨어요.
+
+**정정을 전제로 한 적재 전략**
+
+ECOS는 잠정치를 확정치로 **사후 정정**하는데(예: 2025-12 미국 장기금리 4.02 → 4.05), *갱신 시점을 API로 알려주지 않습니다*. 변경분만 골라낼 방법이 없다는 뜻이라 **DELETE + INSERT 재적재**를 택하고, 매일 배치에서 **직전 1년치를 재조회**해 정정·지연공표를 흡수합니다.
+
+- 신규 테이블 `frgn_itrst_info` **하나로 연/분기/월 통합** — 복합 PK `(주기, 기준시점, 금리종류, 국가)`로 유일성 보장
+- 기준시점 포맷 통일: 연 `YYYY` / 분기 `YYYYQn` / 월 `YYYYMM`
+- 국가는 API의 3자리 코드(KOR·USA…)를 그대로, 미제공 조합은 **row를 만들지 않음**(빈 값으로 채우지 않음)
+- 금리종류·주기는 신규 공통코드로 정의
+
+**운영**
+
+- **AWS Glue 일별 배치**, 인증키는 **Secrets Manager**에서 로드
+- ECOS가 개정 이력을 주지 않으므로, **PK 기준 스냅샷 diff**(값 변경/신규/삭제)로 정정을 추적
+- 응답 코드별 처리 규칙: `INFO-200`(데이터 없음) → skip + 로그, `INFO-100` 인증키 오류, `INFO-300`(조회건수 초과) → 페이징
+- 배치 이력은 기존 `metrics_log_mgmt`에 남기고, **API 원본 JSON은 S3에 적재**해 사후에 누락 여부를 되짚을 수 있게
+
+**공통 모듈 확장** — 기존 `utils/bok_api_itrst.py`의 수집 함수는 *국내 일별 + 항목 1개* 전제라 국제금리(월/분기/연 × 항목 2축)에 맞지 않아, 전용 수집 메서드를 새로 추가했습니다.
 
 ### 이걸 푸는 도구들
 
@@ -139,6 +184,7 @@ RDS PostgreSQL 스키마를 직접 설계해 각 데이터 항목의 라이프�
 현재 진행 중. 앞으로의 방향은:
 
 - **법무검토 에이전트 파이프라인 안정화** — 법령·판례·행정규칙 자동화 파이프라인의 운영 단계 안착
+- **국제금리 파이프라인 관측** — 배포 직후라 정정 발생 빈도·결측 변화가 아직 관측 구간. 스냅샷 diff 누적분으로 *재적재 범위(현재 1년)가 과한지 부족한지*를 데이터로 판단할 예정
 - **개정감지 → 다른 코퍼스로 확장** — 펀드/ELS 약관에도 동일한 incremental update 패턴 적용 (지금은 전체 재처리)
 - **평가 파이프라인 정착** — 펀드/ELS·법령 응답의 정확도를 *도메인 전문가가 검수*하는 사이클을 자동화 데이터셋과 결합 (NeuroCore에서 배운 LLM-as-Judge 하이브리드 패턴 적용 가능)
 - **컴플라이언스 추적** — RAG 응답에 *어떤 문서의 어떤 청크가 인용됐는지* 감사 추적 강화
@@ -151,6 +197,7 @@ RDS PostgreSQL 스키마를 직접 설계해 각 데이터 항목의 라이프�
 담당 범위는 갈래마다 다릅니다:
 - **KMS · 펀드/ELS** — 이미 돌던 파이프라인의 운영과 성능·안정성 고도화
 - **법령 · 판례 · 행정규칙** — *데이터 분석 → 인덱스 설계 → 개발 → 운영*까지 **전 단계 단독 담당**. Open API 적재·개정감지·PostgreSQL state 스키마·행정규칙 확장이 모두 이 범위 안에서 나왔습니다.
+- **국제금리** — *데이터 검증 → 스키마·적재 전략 설계 → 개발 → 배치 운영*까지 **전 단계 단독 담당** (2026.09 배포)
 
 > *"안 돌고 있는 시스템을 만드는 것보다, 돌고 있는 시스템을 더 잘 돌게 만드는 것이 어려울 때가 있다."*
 

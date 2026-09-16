@@ -3,16 +3,17 @@
 
 When I joined KB Securities the RAG pipeline was already running. The mission wasn't *building from scratch* — it was **scaling the pipeline while operating it**: finding bottlenecks in a live system, raising operational stability, and *automating manual work*.
 
-Three streams:
+Four streams:
 - **Internal-ops KMS** — so employees can find work manuals and policies fast
 - **Fund / ELS product embeddings** — the RAG corpus used to *explain products* to customers
-- **Law / precedent / administrative rules (legal-review agent)** — *periodically amended* regulatory data, tracked and re-embedded automatically. **The one pipeline I owned end to end — analysis, design, build, and operation**
+- **Law / precedent / administrative rules (legal-review agent)** — *periodically amended* regulatory data, tracked and re-embedded automatically. **Owned end to end — analysis, design, build, operation**
+- **Global interest rates (investment-analysis agent)** — long/short-term rates for 20 countries across three cycles from the Bank of Korea's ECOS API: a **structured time-series** pipeline, also **owned end to end**
 
-Each stream differs in data shape, refresh cadence, and accuracy requirement — and because it's *securities*, the compliance bar differs from ordinary RAG.
+The first three are *unstructured documents → embeddings*; the fourth is *structured statistics → relational loads*, a different kind of design problem. Each stream differs in data shape, refresh cadence, and accuracy requirement — and because it's *securities*, the compliance bar differs from ordinary RAG.
 
 ## Product Context — The data backbone behind Kkaebi AI
 
-These pipelines feed **"Kkaebi AI," KB Securities' internal AI platform**. My work supplies *RAG corpora* to the multi-agent system employees use (legal review, customer consultation, agreement checking, coding assistance, and more).
+These pipelines feed **"Kkaebi AI," KB Securities' internal AI platform**. My work supplies the *data those answers rest on* to the multi-agent system employees use (legal review, customer consultation, agreement checking, coding assistance, investment analysis, and more) — unstructured documents as RAG corpora, market statistics as structured tables.
 
 For those product-level agents to answer meaningfully, the *data has to be well-organized and current*. This case study is about the **data infrastructure that quietly holds the product features up**.
 
@@ -26,7 +27,7 @@ Scaling a *live* system is sometimes harder than building a new one:
 
 The first thing I did was **read the pipeline's signals** — batch duration, failure rates, log patterns, alarm frequency — and pick the point where improvement would pay off most.
 
-## Approach — Three embedding pipelines
+## Approach — Four data pipelines
 
 ### 1) Internal-ops KMS · *customer-consultation agent backbone*
 
@@ -48,6 +49,50 @@ Three things set it apart from the existing systems:
 - **Revision detection** — laws change often. Logic that picks out only amended provisions for incremental update, cutting full-reprocessing cost
 - **Index standardization** — the legacy law index diverged from the standard schema, making search and maintenance painful; unified it with the same structure as the other corpora
 - **A new administrative-rules pipeline** — different issuing bodies, amendment cadence, and document structure from statutes, so it needed its own ingestion adapter and chunking strategy, landed on the same index schema
+
+### 4) Global interest rates · *investment-analysis agent backbone* — sole ownership
+
+A new pipeline I designed and shipped in September 2026. It ingests the Bank of Korea **ECOS Open API**'s global market rates (table 902Y023, OECD-basis): **long-term (IRLT, 10-year sovereign) and short-term (IR3TIB, 3-month CD/interbank) × 20 countries × annual, quarterly, and monthly cycles**.
+
+Unlike the other three, this is *structured statistics → relational loads* rather than *documents → embeddings*, so the design judgments ran differently.
+
+**Design decisions grounded in verification, not assumption**
+
+Before fixing the structure I checked the data. "Just collect monthly and derive the rest" is the natural assumption — and it doesn't hold:
+
+| Hypothesis tested | Result |
+|---|---|
+| annual = December value | mismatch |
+| quarterly = quarter-end month | mismatch |
+| quarterly = 3-month average | mismatch |
+
+→ **Derivation is impossible**, so annual, quarterly, and monthly are each collected directly. Without that check the pipeline would have shipped on a "collect monthly, compute the rest" design and quietly produced wrong values.
+
+Next I ran a **multithreaded completeness scan across every country × rate type × cycle combination**, finding 10 gaps in three categories — *never published* (Brazil short-term, entire history), *halted or delayed* (Indonesia after 2024-12), and *mid-series gaps* (Mexico long-term, 142 points). Categories matter because they demand different responses: what should page someone versus what is simply normal.
+
+I also sized the load up front: **3,610 rows initially** (400 annual · 802 quarterly · 2,408 monthly), **760 rows per daily batch**.
+
+**Reading the API response shape → 20× fewer calls**
+
+Calling without an item code returns *both rate types across all countries in a single response*. That let me drop the per-country loop and collect everything in **one call per cycle**.
+
+**A load strategy built around revisions**
+
+ECOS revises provisional figures into final ones after the fact (e.g. US long-term for 2025-12: 4.02 → 4.05) and **doesn't expose when a value changed**. With no way to select only the deltas, I chose **DELETE + INSERT re-loading**, with the daily batch re-fetching **the trailing 12 months** to absorb revisions and late publications.
+
+- One new table, `frgn_itrst_info`, holding **all three cycles** — composite PK `(cycle, reference period, rate type, country)` for uniqueness
+- Unified reference-period format: `YYYY` / `YYYYQn` / `YYYYMM`
+- Countries keep the API's 3-letter codes (KOR, USA…); unpublished combinations produce **no row at all** rather than an empty one
+- Rate type and cycle defined as new shared code values
+
+**Operations**
+
+- **AWS Glue daily batch**, API key loaded from **Secrets Manager**
+- Since ECOS publishes no revision history, corrections are tracked via a **PK-keyed snapshot diff** (changed / new / deleted)
+- Per-response-code handling: `INFO-200` (no data) → skip and log, `INFO-100` auth error, `INFO-300` (row limit exceeded) → paginate
+- Batch history lands in the existing `metrics_log_mgmt`; **raw API JSON is archived to S3** so gaps can be re-examined after the fact
+
+**Extending the shared module** — the existing collector in `utils/bok_api_itrst.py` assumed *domestic, daily, single item*, which doesn't fit monthly/quarterly/annual data keyed on two axes, so I added a dedicated collection method.
 
 ### The tools behind it
 
@@ -114,6 +159,7 @@ Operational payoff:
 In progress. Where it's heading:
 
 - **Stabilize the legal-review agent pipeline** — settle the law / precedent / administrative-rules automation into steady-state operation
+- **Observe the interest-rate pipeline** — freshly shipped, so revision frequency and gap behaviour are still being watched. The accumulating snapshot diffs will tell me whether the 12-month re-load window is too wide or too narrow
 - **Extend revision detection to other corpora** — apply the same incremental-update pattern to fund/ELS terms (currently full reprocessing)
 - **Establish an evaluation pipeline** — combine *domain-expert review* of fund/ELS and legal answers with automated datasets (the LLM-as-judge hybrid pattern I learned at NeuroCore applies directly)
 - **Compliance traceability** — strengthen audit trails for *which chunk of which document* a RAG answer cited
@@ -126,6 +172,7 @@ Contracting through PersonaAI, embedded at KB Securities. As a **data-team engin
 Scope differs by stream:
 - **KMS · fund/ELS** — operating pipelines that were already running, and improving their performance and stability
 - **Law · precedent · administrative rules** — **sole ownership across every stage**: data analysis → index design → build → operation. The Open-API ingestion, revision detection, PostgreSQL state schema, and the administrative-rules expansion all came out of that scope.
+- **Global interest rates** — **sole ownership across every stage**: data verification → schema and load-strategy design → build → batch operation (shipped September 2026)
 
 > *"Making a running system run better is sometimes harder than building one that isn't running yet."*
 

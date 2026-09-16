@@ -42,7 +42,7 @@ function Section({
   children: React.ReactNode;
 }) {
   return (
-    <section className="mt-3 break-inside-avoid">
+    <section className="mt-3">
       <h2 className="text-[10.5pt] font-bold tracking-tight border-b border-border pb-0.5 mb-2">
         {title}
       </h2>
@@ -117,7 +117,7 @@ export function ResumeView() {
         <Section title={t.experience}>
           <div className="space-y-2">
             {p.experience.map((e) => (
-              <div key={e.company} className="resume-entry break-inside-avoid">
+              <div key={e.company} className="resume-entry">
                 <div className="flex items-baseline justify-between gap-3">
                   <div className="font-semibold">
                     {e.company}

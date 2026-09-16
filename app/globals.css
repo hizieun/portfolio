@@ -176,8 +176,16 @@ body {
     max-width: none !important;
     box-shadow: none !important;
   }
-  /* keep an entry's heading, dates and bullets together across a page break */
-  .resume-entry {
+  /* Pagination: let a long role flow across the page break, but never
+     strand its heading or split a single bullet. Forcing whole entries to
+     stay together (break-inside: avoid) pushed a tall role wholesale onto
+     the next page and cost a full extra sheet. */
+  .resume-sheet h2,
+  .resume-entry > :first-child {
+    break-after: avoid;
+  }
+  .resume-entry li,
+  .resume-entry p {
     break-inside: avoid;
   }
   a {
