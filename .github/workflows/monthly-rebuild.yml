@@ -1,0 +1,31 @@
+name: Monthly rebuild
+
+# Career length (lib/career.ts) is computed when the module loads, and the
+# pages are statically prerendered — so "5년 10개월" freezes at build time and
+# only moves when something is pushed. A quiet month leaves the site, the OG
+# card, the metadata and the résumé PDF all understating by a month.
+#
+# ponytail: a monthly rebuild fixes every surface at once. Recomputing per
+# request instead would mean threading a function through profile/i18n/OG and
+# giving up static prerender — for a number that changes 12 times a year.
+on:
+  schedule:
+    - cron: "0 18 1 * *" # 1st of each month, 03:00 KST
+  workflow_dispatch:
+
+permissions:
+  actions: write
+
+jobs:
+  trigger-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.actions.createWorkflowDispatch({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: 'build.yml',
+              ref: 'main',
+            })

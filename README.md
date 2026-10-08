@@ -13,8 +13,8 @@
 | **Hero** | 한 줄 소개 + 상태(currently shipping) + 경력(자동 계산) / 5+ 프로젝트 / 논문 2편 |
 | **About** | 4대 핵심역량 — LLM/RAG · Python 백엔드 · AWS Serverless · Computer Vision |
 | **Experience** | 5개 회사 타임라인 (페르소나에이아이·아이티센·뉴로코어·진학사·자이플래닛) |
-| **Projects** | 5개 case study — NeuroCore RAG + Fine-tuning Agent, 현대캐피탈 AI Playground, KB증권 RAG, 진학사 OCR, 자이플래닛 치과 영상 AI |
-| **Side Projects** | my-arxiv (논문 피드 + 한국어 요약), 노포지도 (서울 노포 705곳) |
+| **Projects** | 5개 case study — NeuroCore RAG + Fine-tuning Agent, 현대캐피탈 AI Playground, KB증권 에이전트 데이터 파이프라인, 진학사 OCR, 자이플래닛 치과 영상 AI |
+| **Side Projects** | my-arxiv (논문 피드·한국어 요약·Q&A·커뮤니티), 노포지도 (서울 노포 1,160곳 + AI 추천 eval 하네스) |
 | **Publications** | 국제 학술지 2편 (BMC Oral Health 2023, DMFR 2023) |
 | **Skills** | AI/ML · Vision/NLP · Backend/Data · Cloud/MLOps 알파벳순 정렬 |
 | **Background** | 학력 · 자격증 · 교육수료 |
