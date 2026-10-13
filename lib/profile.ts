@@ -204,10 +204,10 @@ const experienceKo = [
       role: "AI사업본부 · 주임연구원 (정규직)",
       period: "2020.04 – 2022.05",
       client: null as string | null,
-      highlight: "치과 영상 AI — SSL 80%+ 정확도, 국제 학술지 2편 publish",
+      highlight: "치과 영상 AI — SSL 80%+ 정확도, SCIE 학술지 2편 게재",
       bullets: [
         "4인 연구팀에서 데이터 처리·모델 실험 총괄 — 치과 파노라마 영상 기반 연령 예측 및 매복치 발치 난이도 판정 모델 개발 (병원 공동 연구)",
-        "LaplaceNet 기반 반지도학습 vs 지도학습 비교 실험 설계 — 소량 라벨만으로 지도학습 수준 80%+ 정확도 입증, 국제 학술지 2편 공동저자 (BMC Oral Health·DMFR 2023)",
+        "LaplaceNet 기반 반지도학습 vs 지도학습 비교 실험 설계 — 소량 라벨만으로 지도학습 수준 80%+ 정확도 입증, SCIE 등재 학술지 2편 공동저자 (BMC Oral Health·DMFR 2023)",
         "PyTorch 구현 + Ray 기반 하이퍼파라미터 탐색 자동화, ±3년 휴리스틱 그룹화로 임상 활용 가능한 정확도 범위 검증",
         "YOLOv4 공사장 안전장비 탐지(NIPA), EfficientDet 치과질환 추론 API(NIA), KoBERTSum 문서 요약(행안부) 등 CV·NLP 다도메인 과제 수행",
       ],
@@ -227,7 +227,7 @@ const profileKo = {
   stats: [
     { label: "경력", value: `${career.nthYear}년차` },
     { label: "Production AI 프로젝트", value: "5+" },
-    { label: "국제 학술지 게재", value: "2편" },
+    { label: "SCIE 논문 게재", value: "2편" },
   ],
 
   about: [
@@ -331,7 +331,7 @@ const profileEn: typeof profileKo = {
   stats: [
     { label: "Experience", value: `${career.spanYears}+ yrs` },
     { label: "Production AI projects", value: "5+" },
-    { label: "Papers published", value: "2" },
+    { label: "SCIE-indexed papers", value: "2" },
   ],
 
   about: [
@@ -495,7 +495,7 @@ const profileEn: typeof profileKo = {
       period: "Apr 2020 – May 2022",
       client: null,
       highlight:
-        "Dental-imaging AI — held 80%+ accuracy with SSL, 2 papers published in international journals",
+        "Dental-imaging AI — held 80%+ accuracy with SSL, 2 papers published in SCIE-indexed journals",
       bullets: [
         "Led data processing and model experimentation in a 4-person research team building age-estimation and impacted-tooth difficulty models from dental panoramic radiographs (hospital collaboration)",
         "Designed the LaplaceNet SSL vs. supervised comparison, showing 80%+ supervised-level accuracy from a small labeled set — co-author on 2 international journal papers (BMC Oral Health, DMFR 2023)",

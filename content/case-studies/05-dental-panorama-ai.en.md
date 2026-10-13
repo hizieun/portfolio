@@ -3,7 +3,7 @@
 
 Developed AI models that estimate a patient's age and judge impacted-tooth extraction difficulty from dental panoramic radiographs. The core finding, shown experimentally: **semi-supervised learning (SSL) can cut labeling cost while still reaching clinical-grade accuracy.**
 
-The work was published as co-author in two international journals — **BMC Oral Health (2023)** and **DMFR (2023)**.
+The work was published as co-author in two SCIE-indexed journals — **BMC Oral Health (2023)** and **DMFR (2023)**.
 
 ## Role
 
@@ -41,12 +41,12 @@ PyTorch implementations plus **grid search automated with Ray** — turning a sw
 ## Publications
 
 1. **"Application of entire dental panorama image data in artificial intelligence model for age estimation"**
-   _BMC Oral Health_, 2023-12-15 · [Springer Link](https://link.springer.com/article/10.1186/s12903-023-03745-x)
+   _BMC Oral Health_ (SCIE · ISSN 1472-6831), 2023-12-15 · [Springer Link](https://link.springer.com/article/10.1186/s12903-023-03745-x)
 
    WideResNet + DenseNet supervised learning with heuristic grouping (±3-year tolerance) improved prediction accuracy, showing that using the entire image outperforms prior approaches for age estimation.
 
 2. **"The efficacy of supervised learning and semi-supervised learning in diagnosis of impacted third molar on panoramic radiographs through artificial intelligence model"**
-   _DMFR_, 2023-05-16 · [DOI](https://doi.org/10.1259/dmfr.20230030)
+   _Dentomaxillofacial Radiology_ (SCIE · ISSN 0250-832X), 2023-05-16 · [DOI](https://doi.org/10.1259/dmfr.20230030)
 
    WideResNet (SL) vs. LaplaceNet (SSL) — SSL held comparable 80%+ accuracy using *only a small amount of labeled data*, making the case for SSL's practicality in medical image analysis.
 
