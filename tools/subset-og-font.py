@@ -24,7 +24,7 @@ from fontTools.varLib.instancer import instantiateVariableFont
 # every character the OG card can render — keep in sync with opengraph-image.tsx
 TEXT = (
     "강지은데이터의가치를구현하는AI엔지니어경력년차Production프로젝트"
-    "국제학술지게재편Currently shipping at KB증권LLM·RAG·MLOps0123456789+ "
+    "SCIE논문게재편Currently shipping at KB증권LLM·RAG·MLOps0123456789+ "
 )
 OUT = Path("public/fonts/NotoSansKR-OG.ttf")
 

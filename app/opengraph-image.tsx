@@ -158,7 +158,7 @@ export default async function OG() {
               <div
                 style={{ fontSize: "16px", color: "#a1a1aa", display: "flex" }}
               >
-                국제 학술지 게재
+                SCIE 논문 게재
               </div>
             </div>
           </div>
