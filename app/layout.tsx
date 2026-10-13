@@ -14,12 +14,12 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-// Use Vercel's auto-injected URL until a custom domain is wired up,
-// fall back to localhost for local dev.
-const siteUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL
-  ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
-  : process.env.VERCEL_URL
-    ? `https://${process.env.VERCEL_URL}`
+// Canonical origin for og:image and friends. The site self-hosts now, so
+// there is no platform-injected URL to read — and a relative og:image is no
+// use to a crawler. The apex 301s to www, so www is the canonical host.
+const siteUrl =
+  process.env.NODE_ENV === "production"
+    ? "https://www.zieun.dev"
     : "http://localhost:3000";
 
 const title = "강지은 · AI Engineer Portfolio";
