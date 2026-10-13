@@ -258,7 +258,7 @@ const profileKo = {
       name: "노포지도 🍜",
       tagline: "서울 노포·야장 1,160곳 — AI 추천과 그 품질을 재는 eval 하네스까지",
       description:
-        "본인 취미(맛집 지도 정리)를 product로 만든 사이드 프로젝트. Selenium 크롤러 → SQLite → React + Leaflet 풀스택을 end-to-end로 직접 구축하고, 앱형 하단 탭 IA(발견·지도·AI 추천·내 리스트)에 PWA·주간 자동 크롤링·사진 리뷰까지 운영. Gemini 3.6 Flash 챗봇은 식당 데이터에 grounding해 실재하는 곳만 추천합니다. 여기에 **\"추천이 좋아졌다\"를 숫자로 말하기 위한 평가 하네스**를 직접 붙였어요 — 골든셋 149문항(층화 124 + 적대적 엣지 25), 규칙 기반 환각 검출 + LLM-as-Judge 이중 판정, negative control과 고정 fixture로 계측기 자체를 검증, variance 2σ 회귀 게이트를 CI에 연결했습니다.",
+        "본인 취미(맛집 지도 정리)를 product로 만든 사이드 프로젝트. Selenium 크롤러 → SQLite → React + Leaflet 풀스택을 end-to-end로 직접 구축하고, 4탭 IA(발견·지도·AI 추천·내 리스트)를 모바일 하단 탭 / 데스크톱 사이드 내비로 반응형 구성하고, PWA·주간 자동 크롤링·사진 리뷰까지 운영. UI는 **\"노포는 낮의 메뉴판, 야장은 밤의 포장마차\"** 컨셉으로 리디자인해 간판 타이포 히어로와 점선 리더 메뉴판 행을 쓰고, 글로우·그라데이션 같은 생성형 디자인 tell은 걷어냈습니다. Gemini 3.6 Flash 챗봇은 식당 데이터에 grounding해 실재하는 곳만 추천합니다. 여기에 **\"추천이 좋아졌다\"를 숫자로 말하기 위한 평가 하네스**를 직접 붙였어요 — 골든셋 149문항(층화 124 + 적대적 엣지 25), 규칙 기반 환각 검출 + LLM-as-Judge 이중 판정, negative control과 고정 fixture로 계측기 자체를 검증, variance 2σ 회귀 게이트를 CI에 연결했습니다.",
       highlights: [
         "1,160 restaurants",
         "AI 추천 챗봇 (grounded)",
@@ -362,7 +362,7 @@ const profileEn: typeof profileKo = {
       name: "Nopo Map 🍜",
       tagline: "1,160 of Seoul's old-school & street-food spots — plus the eval harness that measures the AI",
       description:
-        "Turned a personal hobby (mapping restaurants) into a product: Selenium crawler → SQLite → React + Leaflet, end-to-end, with an app-style bottom-tab IA (Discover · Map · AI · My List), PWA offline cache, a weekly GitHub Actions crawl, and photo reviews. A Gemini 3.6 Flash chatbot, grounded on the dataset, recommends only real spots. On top of that I built an **evaluation harness to state \"the recommendations got better\" as a number** — a 149-question golden set (124 stratified + 25 adversarial), dual judging (deterministic hallucination detection + LLM-as-judge), a negative control and pinned fixtures that validate the measuring instrument itself, and a variance-derived 2σ regression gate wired into CI.",
+        "Turned a personal hobby (mapping restaurants) into a product: Selenium crawler → SQLite → React + Leaflet, end-to-end, with a responsive 4-tab IA (Discover · Map · AI · My List) — bottom tabs on mobile, a side nav on desktop — PWA offline cache, a weekly GitHub Actions crawl, and photo reviews. The UI is art-directed as **\"nopo = a daytime menu board, yajang = a night street stall\"**: signboard typography, dotted-leader menu rows, and none of the glow-and-gradient tells of generated design. A Gemini 3.6 Flash chatbot, grounded on the dataset, recommends only real spots. On top of that I built an **evaluation harness to state \"the recommendations got better\" as a number** — a 149-question golden set (124 stratified + 25 adversarial), dual judging (deterministic hallucination detection + LLM-as-judge), a negative control and pinned fixtures that validate the measuring instrument itself, and a variance-derived 2σ regression gate wired into CI.",
       highlights: [
         "1,160 restaurants",
         "Grounded AI recommendations",
